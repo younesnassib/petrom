@@ -3,245 +3,135 @@ import 'package:petrom_fidelite/models/auth_response_entity.dart';
 
 AuthResponseEntity $AuthResponseEntityFromJson(Map<String, dynamic> json) {
 	final AuthResponseEntity authResponseEntity = AuthResponseEntity();
-	final AuthResponseHeader? header = jsonConvert.convert<AuthResponseHeader>(json['header']);
-	if (header != null) {
-		authResponseEntity.header = header;
+	final String? status = jsonConvert.convert<String>(json['status']);
+	if (status != null) {
+		authResponseEntity.status = status;
 	}
-	final AuthResponseResponse? response = jsonConvert.convert<AuthResponseResponse>(json['response']);
-	if (response != null) {
-		authResponseEntity.response = response;
+	final dynamic? message = jsonConvert.convert<dynamic>(json['message']);
+	if (message != null) {
+		authResponseEntity.message = message;
+	}
+	final AuthResponseData? data = jsonConvert.convert<AuthResponseData>(json['data']);
+	if (data != null) {
+		authResponseEntity.data = data;
 	}
 	return authResponseEntity;
 }
 
 Map<String, dynamic> $AuthResponseEntityToJson(AuthResponseEntity entity) {
 	final Map<String, dynamic> data = <String, dynamic>{};
-	data['header'] = entity.header.toJson();
-	data['response'] = entity.response.toJson();
-	return data;
-}
-
-AuthResponseHeader $AuthResponseHeaderFromJson(Map<String, dynamic> json) {
-	final AuthResponseHeader authResponseHeader = AuthResponseHeader();
-	final int? status = jsonConvert.convert<int>(json['status']);
-	if (status != null) {
-		authResponseHeader.status = status;
-	}
-	final String? message = jsonConvert.convert<String>(json['message']);
-	if (message != null) {
-		authResponseHeader.message = message;
-	}
-	final String? messageAr = jsonConvert.convert<String>(json['messageAr']);
-	if (messageAr != null) {
-		authResponseHeader.messageAr = messageAr;
-	}
-	return authResponseHeader;
-}
-
-Map<String, dynamic> $AuthResponseHeaderToJson(AuthResponseHeader entity) {
-	final Map<String, dynamic> data = <String, dynamic>{};
 	data['status'] = entity.status;
 	data['message'] = entity.message;
-	data['messageAr'] = entity.messageAr;
+	data['data'] = entity.data.toJson();
 	return data;
 }
 
-AuthResponseResponse $AuthResponseResponseFromJson(Map<String, dynamic> json) {
-	final AuthResponseResponse authResponseResponse = AuthResponseResponse();
-	final String? id = jsonConvert.convert<String>(json['id']);
+AuthResponseData $AuthResponseDataFromJson(Map<String, dynamic> json) {
+	final AuthResponseData authResponseData = AuthResponseData();
+	final AuthResponseDataUser? user = jsonConvert.convert<AuthResponseDataUser>(json['user']);
+	if (user != null) {
+		authResponseData.user = user;
+	}
+	final String? token = jsonConvert.convert<String>(json['token']);
+	if (token != null) {
+		authResponseData.token = token;
+	}
+	return authResponseData;
+}
+
+Map<String, dynamic> $AuthResponseDataToJson(AuthResponseData entity) {
+	final Map<String, dynamic> data = <String, dynamic>{};
+	data['user'] = entity.user.toJson();
+	data['token'] = entity.token;
+	return data;
+}
+
+AuthResponseDataUser $AuthResponseDataUserFromJson(Map<String, dynamic> json) {
+	final AuthResponseDataUser authResponseDataUser = AuthResponseDataUser();
+	final int? id = jsonConvert.convert<int>(json['id']);
 	if (id != null) {
-		authResponseResponse.id = id;
-	}
-	final String? username = jsonConvert.convert<String>(json['username']);
-	if (username != null) {
-		authResponseResponse.username = username;
-	}
-	final String? civilite = jsonConvert.convert<String>(json['civilite']);
-	if (civilite != null) {
-		authResponseResponse.civilite = civilite;
-	}
-	final String? nom = jsonConvert.convert<String>(json['nom']);
-	if (nom != null) {
-		authResponseResponse.nom = nom;
-	}
-	final String? prenom = jsonConvert.convert<String>(json['prenom']);
-	if (prenom != null) {
-		authResponseResponse.prenom = prenom;
-	}
-	final String? idModuleProfile = jsonConvert.convert<String>(json['id_module_profile']);
-	if (idModuleProfile != null) {
-		authResponseResponse.idModuleProfile = idModuleProfile;
+		authResponseDataUser.id = id;
 	}
 	final String? email = jsonConvert.convert<String>(json['email']);
 	if (email != null) {
-		authResponseResponse.email = email;
+		authResponseDataUser.email = email;
 	}
-	final String? tel = jsonConvert.convert<String>(json['tel']);
-	if (tel != null) {
-		authResponseResponse.tel = tel;
-	}
-	final String? idParent = jsonConvert.convert<String>(json['id_parent']);
-	if (idParent != null) {
-		authResponseResponse.idParent = idParent;
-	}
-	final String? dateActivation = jsonConvert.convert<String>(json['date_activation']);
-	if (dateActivation != null) {
-		authResponseResponse.dateActivation = dateActivation;
-	}
-	final String? actif = jsonConvert.convert<String>(json['actif']);
-	if (actif != null) {
-		authResponseResponse.actif = actif;
-	}
-	final String? loginLastLogin = jsonConvert.convert<String>(json['login_last_login']);
-	if (loginLastLogin != null) {
-		authResponseResponse.loginLastLogin = loginLastLogin;
-	}
-	final String? type = jsonConvert.convert<String>(json['type']);
-	if (type != null) {
-		authResponseResponse.type = type;
-	}
-	final AuthResponseResponseClient? client = jsonConvert.convert<AuthResponseResponseClient>(json['client']);
-	if (client != null) {
-		authResponseResponse.client = client;
-	}
-	final String? nCarte = jsonConvert.convert<String>(json['NCarte']);
-	if (nCarte != null) {
-		authResponseResponse.nCarte = nCarte;
-	}
-	final List<AuthResponseResponseDashboard>? dashboard = jsonConvert.convertListNotNull<AuthResponseResponseDashboard>(json['dashboard']);
-	if (dashboard != null) {
-		authResponseResponse.dashboard = dashboard;
-	}
-	return authResponseResponse;
-}
-
-Map<String, dynamic> $AuthResponseResponseToJson(AuthResponseResponse entity) {
-	final Map<String, dynamic> data = <String, dynamic>{};
-	data['id'] = entity.id;
-	data['username'] = entity.username;
-	data['civilite'] = entity.civilite;
-	data['nom'] = entity.nom;
-	data['prenom'] = entity.prenom;
-	data['id_module_profile'] = entity.idModuleProfile;
-	data['email'] = entity.email;
-	data['tel'] = entity.tel;
-	data['id_parent'] = entity.idParent;
-	data['date_activation'] = entity.dateActivation;
-	data['actif'] = entity.actif;
-	data['login_last_login'] = entity.loginLastLogin;
-	data['type'] = entity.type;
-	data['client'] = entity.client.toJson();
-	data['NCarte'] = entity.nCarte;
-	data['dashboard'] =  entity.dashboard.map((v) => v.toJson()).toList();
-	return data;
-}
-
-AuthResponseResponseClient $AuthResponseResponseClientFromJson(Map<String, dynamic> json) {
-	final AuthResponseResponseClient authResponseResponseClient = AuthResponseResponseClient();
-	final String? idCompte = jsonConvert.convert<String>(json['id_compte']);
-	if (idCompte != null) {
-		authResponseResponseClient.idCompte = idCompte;
-	}
-	final String? idClientPcard = jsonConvert.convert<String>(json['id_client_pcard']);
-	if (idClientPcard != null) {
-		authResponseResponseClient.idClientPcard = idClientPcard;
-	}
-	final String? idTavl = jsonConvert.convert<String>(json['id_tavl']);
-	if (idTavl != null) {
-		authResponseResponseClient.idTavl = idTavl;
+	final String? phone = jsonConvert.convert<String>(json['phone']);
+	if (phone != null) {
+		authResponseDataUser.phone = phone;
 	}
 	final String? codeSap = jsonConvert.convert<String>(json['code_sap']);
 	if (codeSap != null) {
-		authResponseResponseClient.codeSap = codeSap;
+		authResponseDataUser.codeSap = codeSap;
 	}
-	final String? libelle = jsonConvert.convert<String>(json['libelle']);
-	if (libelle != null) {
-		authResponseResponseClient.libelle = libelle;
+	final String? deviceId = jsonConvert.convert<String>(json['device_id']);
+	if (deviceId != null) {
+		authResponseDataUser.deviceId = deviceId;
 	}
-	final String? dateInsert = jsonConvert.convert<String>(json['date_insert']);
-	if (dateInsert != null) {
-		authResponseResponseClient.dateInsert = dateInsert;
+	final dynamic? deviceIdSecond = jsonConvert.convert<dynamic>(json['device_id_second']);
+	if (deviceIdSecond != null) {
+		authResponseDataUser.deviceIdSecond = deviceIdSecond;
 	}
-	final String? userInsert = jsonConvert.convert<String>(json['user_insert']);
-	if (userInsert != null) {
-		authResponseResponseClient.userInsert = userInsert;
+	final String? dateBirth = jsonConvert.convert<String>(json['date_birth']);
+	if (dateBirth != null) {
+		authResponseDataUser.dateBirth = dateBirth;
 	}
-	final String? idUserCompte = jsonConvert.convert<String>(json['id_user_compte']);
-	if (idUserCompte != null) {
-		authResponseResponseClient.idUserCompte = idUserCompte;
+	final String? gender = jsonConvert.convert<String>(json['gender']);
+	if (gender != null) {
+		authResponseDataUser.gender = gender;
 	}
-	final String? dataCreation = jsonConvert.convert<String>(json['data_creation']);
-	if (dataCreation != null) {
-		authResponseResponseClient.dataCreation = dataCreation;
+	final String? city = jsonConvert.convert<String>(json['city']);
+	if (city != null) {
+		authResponseDataUser.city = city;
 	}
-	final String? communication = jsonConvert.convert<String>(json['communication']);
-	if (communication != null) {
-		authResponseResponseClient.communication = communication;
+	final String? adresse = jsonConvert.convert<String>(json['adresse']);
+	if (adresse != null) {
+		authResponseDataUser.adresse = adresse;
 	}
-	final String? statut = jsonConvert.convert<String>(json['statut']);
-	if (statut != null) {
-		authResponseResponseClient.statut = statut;
+	final String? profession = jsonConvert.convert<String>(json['profession']);
+	if (profession != null) {
+		authResponseDataUser.profession = profession;
 	}
-	return authResponseResponseClient;
+	final String? compteId = jsonConvert.convert<String>(json['compte_id']);
+	if (compteId != null) {
+		authResponseDataUser.compteId = compteId;
+	}
+	final dynamic? emailVerifiedAt = jsonConvert.convert<dynamic>(json['email_verified_at']);
+	if (emailVerifiedAt != null) {
+		authResponseDataUser.emailVerifiedAt = emailVerifiedAt;
+	}
+	final String? activatedAt = jsonConvert.convert<String>(json['activated_at']);
+	if (activatedAt != null) {
+		authResponseDataUser.activatedAt = activatedAt;
+	}
+	final String? createdAt = jsonConvert.convert<String>(json['created_at']);
+	if (createdAt != null) {
+		authResponseDataUser.createdAt = createdAt;
+	}
+	final String? updatedAt = jsonConvert.convert<String>(json['updated_at']);
+	if (updatedAt != null) {
+		authResponseDataUser.updatedAt = updatedAt;
+	}
+	return authResponseDataUser;
 }
 
-Map<String, dynamic> $AuthResponseResponseClientToJson(AuthResponseResponseClient entity) {
+Map<String, dynamic> $AuthResponseDataUserToJson(AuthResponseDataUser entity) {
 	final Map<String, dynamic> data = <String, dynamic>{};
-	data['id_compte'] = entity.idCompte;
-	data['id_client_pcard'] = entity.idClientPcard;
-	data['id_tavl'] = entity.idTavl;
+	data['id'] = entity.id;
+	data['email'] = entity.email;
+	data['phone'] = entity.phone;
 	data['code_sap'] = entity.codeSap;
-	data['libelle'] = entity.libelle;
-	data['date_insert'] = entity.dateInsert;
-	data['user_insert'] = entity.userInsert;
-	data['id_user_compte'] = entity.idUserCompte;
-	data['data_creation'] = entity.dataCreation;
-	data['communication'] = entity.communication;
-	data['statut'] = entity.statut;
-	return data;
-}
-
-AuthResponseResponseDashboard $AuthResponseResponseDashboardFromJson(Map<String, dynamic> json) {
-	final AuthResponseResponseDashboard authResponseResponseDashboard = AuthResponseResponseDashboard();
-	final String? titleFr = jsonConvert.convert<String>(json['titleFr']);
-	if (titleFr != null) {
-		authResponseResponseDashboard.titleFr = titleFr;
-	}
-	final String? titleAr = jsonConvert.convert<String>(json['titleAr']);
-	if (titleAr != null) {
-		authResponseResponseDashboard.titleAr = titleAr;
-	}
-	final String? bgColor = jsonConvert.convert<String>(json['bgColor']);
-	if (bgColor != null) {
-		authResponseResponseDashboard.bgColor = bgColor;
-	}
-	final String? valueFr = jsonConvert.convert<String>(json['valueFr']);
-	if (valueFr != null) {
-		authResponseResponseDashboard.valueFr = valueFr;
-	}
-	final String? valueAr = jsonConvert.convert<String>(json['valueAr']);
-	if (valueAr != null) {
-		authResponseResponseDashboard.valueAr = valueAr;
-	}
-	final String? url = jsonConvert.convert<String>(json['url']);
-	if (url != null) {
-		authResponseResponseDashboard.url = url;
-	}
-	final String? icon = jsonConvert.convert<String>(json['icon']);
-	if (icon != null) {
-		authResponseResponseDashboard.icon = icon;
-	}
-	return authResponseResponseDashboard;
-}
-
-Map<String, dynamic> $AuthResponseResponseDashboardToJson(AuthResponseResponseDashboard entity) {
-	final Map<String, dynamic> data = <String, dynamic>{};
-	data['titleFr'] = entity.titleFr;
-	data['titleAr'] = entity.titleAr;
-	data['bgColor'] = entity.bgColor;
-	data['valueFr'] = entity.valueFr;
-	data['valueAr'] = entity.valueAr;
-	data['url'] = entity.url;
-	data['icon'] = entity.icon;
+	data['device_id'] = entity.deviceId;
+	data['device_id_second'] = entity.deviceIdSecond;
+	data['date_birth'] = entity.dateBirth;
+	data['gender'] = entity.gender;
+	data['city'] = entity.city;
+	data['adresse'] = entity.adresse;
+	data['profession'] = entity.profession;
+	data['compte_id'] = entity.compteId;
+	data['email_verified_at'] = entity.emailVerifiedAt;
+	data['activated_at'] = entity.activatedAt;
+	data['created_at'] = entity.createdAt;
+	data['updated_at'] = entity.updatedAt;
 	return data;
 }

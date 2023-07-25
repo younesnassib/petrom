@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:petrom_fidelite/models/car_response_entity.dart';
 import 'package:petrom_fidelite/models/deletealerte_entity.dart';
 import 'package:petrom_fidelite/screens/alert_add.dart';
 import 'package:petrom_fidelite/screens/station_details.dart';
 
-import '../models/alerte_response_entity.dart';
 import '../models/default_infos_entity.dart';
 import '../models/session.dart';
+import '../tools/Common.dart';
 import 'car_add.dart';
+import 'localisation_screen.dart';
 
 enum SampleItem { itemOne, itemTwo }
 
@@ -33,80 +35,82 @@ class _StationsPageState extends State<StationsListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Stations PETROM',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.all(10),
-              child: TextField(
-                controller: myController,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.blue),
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          child: Padding(
+            padding: EdgeInsets.all(5),
+            child: TextField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
               ),
+              controller: myController,
             ),
           ),
-          Expanded(
-            flex: 8,
-            child: ListView.builder(
-              itemCount: stations.length,
-              clipBehavior: Clip.none,
-              itemBuilder: (BuildContext context, int index) {
-                return buildProduct(stations[index]);
-              },
-            ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: stations.length,
+            clipBehavior: Clip.none,
+            itemBuilder: (BuildContext context, int index) {
+              return buildProduct(stations[index]);
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget buildProduct(DefaultInfosResponseStations response) => InkWell(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => StationDetails(stationRecup: response)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => StationDetails(stationRecup: response)));
         },
         child: Material(
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),
-            height: 120,
-            width: 180,
-            child: Row(
+            height: 240,
+            child: Column(
               children: [
-                Expanded(
-                  flex: 9,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10),
-                      Text(response.nom),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          response.adresse,
-                          maxLines: 2,
-                        ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Text(response.nom),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              response.adresse,
+                              maxLines: 2,
+                            ),
+                          ),
+                          Text(response.ville),
+                        ],
                       ),
-                      Text(response.ville),
-                      SizedBox(height: 10),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Text(response.distance + "km"),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                buildService(response),
+                buildFooter(response)
               ],
             ),
           ),
@@ -140,15 +144,188 @@ class _StationsPageState extends State<StationsListPage> {
           stations.add(s);
         }
       }
+      SortStations(stations);
     });
   }
 
   @override
   void initState() {
     super.initState();
-
     stations.addAll(Session.informations.response.stations);
+    SortStations(stations);
     // Start listening to changes.
     myController.addListener(_printLatestValue);
+  }
+
+  void SortStations(List<DefaultInfosResponseStations> stations) {
+    if (Session.currentposition != null) {
+      for (var s in stations) {
+        s.distance = Common.calculateDistance(
+                Session.currentposition.latitude,
+                Session.currentposition.longitude,
+                double.parse(s.latitude),
+                double.parse(s.longitude))
+            .toString();
+      }
+      stations.sort((a, b) {
+        return a.compareTo(b);
+        //softing on alphabetical order (Ascending order by Name String)
+      });
+
+      for (var s in stations) {
+        s.distance = (int.parse(s.distance) / 100).toString();
+      }
+    }
+  }
+
+  Widget buildService(DefaultInfosResponseStations response) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          response.cafe == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_coffe_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_coffe_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+          response.vidange == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_vidange_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_vidange_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+          response.entretien == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_entretient_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_entretient_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+          response.restaurant == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_restaurant_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_restaurant_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+          response.shop == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_shopping_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_shopping_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+          response.lavage == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_lavage_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_lavage_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+          response.card == '1'
+              ? Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_card_active.png'),
+                  height: 40,
+                  width: 40,
+                ))
+              : Expanded(
+                  child: Image(
+                  image: AssetImage('images/ic_card_desactive.png'),
+                  height: 40,
+                  width: 40,
+                )),
+        ],
+      ),
+    );
+  }
+
+  Widget buildFooter(DefaultInfosResponseStations response) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red, // Background Color
+                ),
+                onPressed: () => {},
+                child: Text(
+                  'Appelez nous',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue, // Background Color
+                ),
+                onPressed: () => {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          LocalisationScreen(station: response)))
+                },
+                child: Text(
+                  'Localisation',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

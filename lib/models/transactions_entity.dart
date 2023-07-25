@@ -5,45 +5,8 @@ import 'package:petrom_fidelite/generated/json/transactions_entity.g.dart';
 @JsonSerializable()
 class TransactionsEntity {
 
-	late TransactionsHeader header;
-	late List<TransactionsResponse> response;
-  
-  TransactionsEntity();
-
-  factory TransactionsEntity.fromJson(Map<String, dynamic> json) => $TransactionsEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => $TransactionsEntityToJson(this);
-
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-}
-
-@JsonSerializable()
-class TransactionsHeader {
-
-	late int status;
-	late String message;
-	late String messageAr;
-  
-  TransactionsHeader();
-
-  factory TransactionsHeader.fromJson(Map<String, dynamic> json) => $TransactionsHeaderFromJson(json);
-
-  Map<String, dynamic> toJson() => $TransactionsHeaderToJson(this);
-
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-}
-
-@JsonSerializable()
-class TransactionsResponse {
-
 	@JSONField(name: "NUM")
-	late int nUM;
+	late String nUM;
 	@JSONField(name: "PAN")
 	late String pAN;
 	@JSONField(name: "NOM")
@@ -59,19 +22,19 @@ class TransactionsResponse {
 	@JSONField(name: "P")
 	late String p;
 	@JSONField(name: "Q")
-	late double q;
+	late String q;
 	@JSONField(name: "M")
-	late double m;
+	late String m;
 	@JSONField(name: "K")
 	late String k;
 	@JSONField(name: "MODE")
 	late String mODE;
   
-  TransactionsResponse();
+  TransactionsEntity();
 
-  factory TransactionsResponse.fromJson(Map<String, dynamic> json) => $TransactionsResponseFromJson(json);
+  factory TransactionsEntity.fromJson(Map<String, dynamic> json) => $TransactionsEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => $TransactionsResponseToJson(this);
+  Map<String, dynamic> toJson() => $TransactionsEntityToJson(this);
 
   @override
   String toString() {

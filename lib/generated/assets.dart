@@ -4,12 +4,16 @@ class Assets {
 
   static const String imagesAccueil = 'images/accueil.png';
   static const String imagesActualites = 'images/actualites.png';
+  static const String imagesAdresse = 'images/adresse.png';
   static const String imagesAlerte = 'images/alerte.png';
   static const String imagesArrowleft = 'images/arrowleft.png';
   static const String imagesArrowright = 'images/arrowright.png';
+  static const String imagesAttarikProImage = 'images/Attarik_pro_image.jpeg';
   static const String imagesAuto = 'images/auto.png';
+  static const String imagesBiometrie = 'images/biometrie.png';
   static const String imagesBluebg = 'images/bluebg.jpg';
   static const String imagesCarburant = 'images/carburant.png';
+  static const String imagesCards = 'images/cards.png';
   static const String imagesCarteBlue = 'images/carte_blue.jpg';
   static const String imagesCartebancaire = 'images/cartebancaire.png';
   static const String imagesCartebancaire2 = 'images/cartebancaire2.png';
@@ -19,8 +23,17 @@ class Assets {
   static const String imagesCreditcard = 'images/creditcard.png';
   static const String imagesDashCommande = 'images/dash_commande.png';
   static const String imagesEmail = 'images/email.png';
+  static const String imagesEmailadresse = 'images/emailadresse.png';
+  static const String imagesEnseigneCIHBank = 'images/enseigneCIHBank.jpeg';
+  static const String imagesEnseignebosch = 'images/enseignebosch.jpeg';
+  static const String imagesEnseignesVeniziaIce = 'images/enseignesVeniziaIce.png';
+  static const String imagesEnseigneselephantbleu = 'images/enseigneselephantbleu.png';
+  static const String imagesEnseignesescale = 'images/enseignesescale.jpeg';
+  static const String imagesGas = 'images/gas.png';
+  static const String imagesGreenCheck = 'images/greenCheck.png';
   static const String imagesIcStation = 'images/ic_station.png';
   static const String imagesIcStationPetrom = 'images/ic_station_petrom.png';
+  static const String imagesListe = 'images/liste.png';
   static const String imagesLubrifiant = 'images/lubrifiant.png';
   static const String imagesNaviguer = 'images/naviguer.png';
   static const String imagesOff = 'images/off.png';
@@ -29,12 +42,17 @@ class Assets {
   static const String imagesPetromLogo = 'images/petrom_logo.png';
   static const String imagesPhotopetrom = 'images/photopetrom.jpeg';
   static const String imagesPneu = 'images/pneu.png';
+  static const String imagesProfession = 'images/profession.png';
+  static const String imagesRedChek = 'images/redChek.png';
   static const String imagesRight = 'images/right.png';
   static const String imagesServices = 'images/services.png';
   static const String imagesStationpetrom = 'images/stationpetrom.jpeg';
   static const String imagesTel = 'images/tel.png';
+  static const String imagesTelephone = 'images/telephone.png';
+  static const String imagesToutproduit = 'images/toutproduit.png';
   static const String imagesUser = 'images/user.png';
   static const String imagesUtilisateurdeprofil = 'images/utilisateurdeprofil.png';
+  static const String imagesVille = 'images/ville.png';
   static const String imagesVoiture = 'images/voiture.png';
 
 }

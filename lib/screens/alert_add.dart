@@ -4,11 +4,13 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_pickers/helpers/show_scroll_picker.dart';
-import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:petrom_fidelite/models/session.dart';
 import 'package:petrom_fidelite/screens/alertes_screen.dart';
 import 'package:petrom_fidelite/screens/first_page.dart';
 import '../models/car_add_entity.dart';
+import '../tools/Common.dart';
 import 'car_screen.dart';
 
 class AlerteAddPage extends StatefulWidget {
@@ -36,7 +38,9 @@ class AlerteAddPageState extends State<AlerteAddPage> {
   var apartirController = new TextEditingController();
   var chaqueController = new TextEditingController();
   var descriptionController = new TextEditingController();
-  final url = 'http://card.petrom.ma/api/AttarikPro.php/';
+  var Matricule2Controller = new TextEditingController();
+  var Matricule3Controller = new TextEditingController();
+  final url = Session.url + 'alerts';
 
   String typealerte = '';
   String declencher = '';
@@ -44,6 +48,7 @@ class AlerteAddPageState extends State<AlerteAddPage> {
   String marque = '';
   String carte = '';
   int indextypevoiture = 0;
+  String arabMatricule = '';
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +89,37 @@ class AlerteAddPageState extends State<AlerteAddPage> {
             child: Center(
               child: Card(
                 color: Colors.blue,
-                child: FlatButton(
-                  height: 30,
-                  onPressed: () => {addalerte()},
+                child: TextButton(
+                  onPressed: () => {
+                    if (isChecked == true)
+                      {
+                        if (date.isAfter(DateTime.now()))
+                          {addalerte()}
+                        else
+                          {
+                            Fluttertoast.showToast(
+                                msg:
+                                    'La date que vous avez choisi n est pas valide',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.grey[200],
+                                textColor: Colors.black,
+                                fontSize: 16.0)
+                          }
+                      }
+                    else
+                      {
+                        addalerte()
+                        // Fluttertoast.showToast(
+                        //     msg:
+                        //         'La date que vous avez choisi n est pas valide',
+                        //     toastLength: Toast.LENGTH_SHORT,
+                        //     gravity: ToastGravity.BOTTOM,
+                        //     backgroundColor: Colors.grey[200],
+                        //     textColor: Colors.black,
+                        //     fontSize: 16.0)
+                      }
+                  },
                   child: const Text(
                     'Ajouter une alerte',
                     style: TextStyle(
@@ -177,9 +210,41 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         controller: CapacitereservoirController,
       );
     } else if (title == "Matricule") {
-      return TextField(
-        decoration: InputDecoration(border: InputBorder.none, hintText: title),
-        controller: MatriculeController,
+      return Container(
+        width: double.infinity,
+        child: Row(children: [
+          Expanded(
+            flex: 5,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              maxLength: 5,
+              decoration: InputDecoration(border: InputBorder.none),
+              controller: MatriculeController,
+            ),
+          ),
+          Expanded(flex: 1, child: Text(textAlign: TextAlign.center, "-")),
+          Expanded(
+              flex: 1,
+              child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: arabMatricule,
+                  items: getArabMatriculePickerItems()
+                      .map((item) => DropdownMenuItem<String>(
+                          value: item, child: Text(item)))
+                      .toList(),
+                  onChanged: (item) => setState(() => arabMatricule = item!))),
+          Expanded(flex: 1, child: Text(textAlign: TextAlign.center, "-")),
+          Expanded(
+              flex: 2,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                maxLength: 2,
+                decoration: InputDecoration(border: InputBorder.none),
+                controller: Matricule3Controller,
+              )),
+        ]),
       );
     } else if (title == "Description") {
       return TextField(
@@ -233,6 +298,7 @@ class AlerteAddPageState extends State<AlerteAddPage> {
     typealerte = Session.informations.response.services[0];
     typevoiture = Session.informations.response.marquevehicules[0].nom;
     declencher = "Jour(s)";
+    arabMatricule = "أ";
     super.initState();
   }
 
@@ -248,7 +314,6 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         builder: (context) {
           return Center(child: CircularProgressIndicator());
         });
-    String passwd = Session.generateMd5('4276').toString();
     try {
       // nom_alert,distance_declenche,id,date_declenche,frequence_date,frequence_distance,description,type_frequence_temps,type
       String type = '';
@@ -258,46 +323,86 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         type = '2';
       }
       String typefrequencetemps = '';
-      if (declencher=="Mois") {
+      if (declencher == "Mois") {
         typefrequencetemps = '2';
-      } else if(declencher=="Annees"){
+      } else if (declencher == "Annees") {
         typefrequencetemps = '3';
-      }else typefrequencetemps='1';
+      } else
+        typefrequencetemps = '1';
 
       String month = '';
-      if (date.month.toString().length==1) {
-        month="0"+date.month.toString();
-      } else month=date.month.toString();
+      if (date.month.toString().length == 1) {
+        month = "0" + date.month.toString();
+      } else
+        month = date.month.toString();
 
+      var headers = {
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': 'Bearer ' + Session.infosUser.data.token
+      };
+      if (chaqueController.text == '') {
+        chaqueController.text = '0';
+      }
+      if (apartirController.text == '') {
+        apartirController.text = '0';
+      }
+      if (numerodeclencheur.text == '') {
+        numerodeclencheur.text = '0';
+      }
+      String Matricule = '';
+      switch (arabMatricule) {
+        case "أ":
+          Matricule = 'A';
+          break;
+        case "ب":
+          Matricule = 'B';
+          break;
+        case "د":
+          Matricule = 'D';
+          break;
+        case "ه":
+          Matricule = 'H';
+          break;
+        case "و":
+          Matricule = 'O';
+          break;
+        case "ط":
+          Matricule = 'T';
+          break;
+        case "ي":
+          Matricule = 'Y';
+          break;
+      }
       Map<String, String> qParams = {
-        'todo': 'INSERTALERT',
-        'U': '0623504276',
-        'P': passwd,
-        'key': 'lks@k!rkjjcs662P655h',
-        'matricule': 'ww5788',
+        'matricule': MatriculeController.text +
+            '.' +
+            Matricule +
+            '.' +
+            Matricule3Controller.text,
         'nom_alert': typealerte,
         'distance_declenche': chaqueController.text,
+        //'distance_declenche': '0',
         'id': '0',
-        'date_declenche': '${date.year}${month}${date.day}',
-        'frequence_date': '1',
+        'date_declenche': '${date.year}-${date.month}-${date.day}',
+        'frequence_date': numerodeclencheur.text,
         'frequence_distance': apartirController.text,
         'description': descriptionController.text,
         'type_frequence_temps': typefrequencetemps,
         'type': type,
       };
-      final response =
-          await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      CarAddEntity ARE = CarAddEntity.fromJson(jsonData);
+      var request =
+          http.MultipartRequest('POST', Uri.parse(Session.url + 'alerts'));
+      request.fields.addAll(qParams);
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
       Navigator.of(context).pop();
-      setState(
-        () {
-          caraddresponse = ARE;
-          if (caraddresponse.header.status == 200) {
-            toalertes(context);
-          } else {}
-        },
-      );
+      if (response.statusCode == 200) {
+        toalertes(context);
+      } else {
+        print(response.reasonPhrase);
+      }
     } catch (err) {}
   }
 
@@ -308,11 +413,7 @@ class AlerteAddPageState extends State<AlerteAddPage> {
   }
 
   void toalertes(BuildContext context) {
-    Navigator.of(context).pushNamed(AlertePage.screenRoute).then(
-      (result) {
-        if (result != null) {}
-      },
-    );
+    Navigator.pushReplacementNamed(context, AlertePage.screenRoute);
   }
 
   Widget buildCheckRow() => Container(
@@ -403,5 +504,9 @@ class AlerteAddPageState extends State<AlerteAddPage> {
           buildRows('Description'),
         ],
       );
+  }
+
+  List<String> getArabMatriculePickerItems() {
+    return ["أ", "ب", "د", "ه", "و", "ط", "ي"];
   }
 }

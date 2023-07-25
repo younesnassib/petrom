@@ -8,7 +8,7 @@ import '../models/session.dart';
 
 class CarDetails extends StatefulWidget {
   static const screenRoute = '/stationdetails';
-  final CarResponseResponse cardetail;
+  final CarResponseEntity cardetail;
 
   const CarDetails({super.key, required this.cardetail});
 
@@ -48,9 +48,8 @@ class CarDetailsState extends State<CarDetails> {
                   buildRows('Matricule', widget.cardetail.matricule),
                   buildRows('Marque', widget.cardetail.marque),
                   buildRows('Motorisation', widget.cardetail.motorisation),
-                  buildRows('Kilometrage courant', widget.cardetail.kmCourrant),
-                  buildRows('Modèle', widget.cardetail.modele),
-                  buildRows('Carte', widget.cardetail.panCarte),
+                  buildRows('Kilometrage courant', widget.cardetail.kmCourant.toInt().toString()),
+                  buildRows('Carte', widget.cardetail.modele),
                   buildRows('Réservoir', widget.cardetail.reservoir),
                 ],
               ),

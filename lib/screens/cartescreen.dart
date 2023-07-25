@@ -3,20 +3,12 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:petrom_fidelite/models/carte_response_entity.dart';
 import 'package:petrom_fidelite/screens/transactions_page.dart';
 
-import '../models/cartehome.dart';
 import '../models/historiquecarte_entity.dart';
 import '../models/session.dart';
-import 'carte_first.dart';
-import 'carte_first.dart';
-import 'carte_first.dart';
-import 'carte_first.dart';
-import 'carte_first.dart';
-import 'carte_first.dart';
-import 'carte_first.dart';
 
 class CarteScreen extends StatefulWidget {
   CarteScreen({Key? key}) : super(key: key);
@@ -32,6 +24,7 @@ class _CarteScreenState extends State<CarteScreen> {
   late String cardsStringtopass;
   late String datedebuttopass;
   late String datefintopass;
+  late String cartetopass;
 
   late DateTime datefin;
 
@@ -42,6 +35,7 @@ class _CarteScreenState extends State<CarteScreen> {
     cardsStringtopass = arguments['CARDS'];
     datedebuttopass = arguments['dd'];
     datefintopass = arguments['df'];
+    cartetopass= arguments['CARDS'];
     return Scaffold(
         body: SafeArea(
       child: Container(
@@ -69,31 +63,54 @@ class _CarteScreenState extends State<CarteScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * 2 / 3,
                   width: double.infinity,
-                  child: FutureBuilder<CarteResponseEntity>(
-                    future: getcartes(),
+                  child: FutureBuilder<List<HistoriquecarteEntity>>(
+                    future: getcarteshistoriques(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return PageView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.response.length,
-                            itemBuilder: (context, i) {
-                              return Column(children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Column(
-                                    children: [
-                                      buildProduct(snapshot.data!.response[i])
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: buildtransactions(
-                                      snapshot.data!.response[i]),
+                          scrollDirection: Axis.vertical,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, i) {
+                            return Column(
+                              children: [
+                                Column(
+                                  children: [
+                                    buildTitleRows(),
+                                    buildRows(
+                                        snapshot.data![0].p,
+                                        snapshot.data![0].q.toString(),
+                                        snapshot.data![0].m.toString()),
+                                    buildRows(
+                                        snapshot.data![1].p,
+                                        snapshot.data![1].q.toString(),
+                                        snapshot.data![1].m.toString()),
+                                    buildRows(
+                                        snapshot.data![2].p,
+                                        snapshot.data![2].q.toString(),
+                                        snapshot.data![2].m.toString()),
+                                    buildRows(
+                                        snapshot.data![3].p,
+                                        snapshot.data![3].q.toString(),
+                                        snapshot.data![3].m.toString()),
+                                    buildRows(
+                                        snapshot.data![4].p,
+                                        snapshot.data![4].q.toString(),
+                                        snapshot.data![4].m.toString()),
+                                    buildRows(
+                                        snapshot.data![5].p,
+                                        snapshot.data![5].q.toString(),
+                                        snapshot.data![5].m.toString()),
+                                    buildRows(
+                                        snapshot.data![6].p,
+                                        snapshot.data![6].q.toString(),
+                                        snapshot.data![6].m.toString()),
+                                  ],
                                 )
-                              ]);
-                            });
+                              ],
+                            );
+                          },
+                        );
                       }
                       return const Center(child: CircularProgressIndicator());
                     },
@@ -107,12 +124,13 @@ class _CarteScreenState extends State<CarteScreen> {
               child: Center(
                 child: Card(
                   color: Colors.blue,
-                  child: FlatButton(
-                    height: 30,
+                  child: TextButton(
                     onPressed: () {
                       Navigator.of(context)
                           .pushNamed(TransactionsPage.screenRoute, arguments: {
-                        "CARDS": '21983',
+                        "CARDS": cartetopass,
+                        'dd': datedebuttopass,
+                        'df': datefintopass,
                       }).then(
                         (result) {
                           if (result != null) {}
@@ -134,60 +152,60 @@ class _CarteScreenState extends State<CarteScreen> {
     ));
   }
 
-  Widget buildtransactions(CarteResponseResponse response) => Container(
-        child: FutureBuilder<HistoriquecarteEntity>(
-          future: getcarteshistoriques(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return PageView.builder(
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: snapshot.data!.response.length,
-                itemBuilder: (context, i) {
-                  return Column(
-                    children: [
-                      Column(
-                        children: [
-                          buildTitleRows(),
-                          buildRows(
-                              snapshot.data!.response[0].p,
-                              snapshot.data!.response[0].q.toString(),
-                              snapshot.data!.response[0].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[1].p,
-                              snapshot.data!.response[1].q.toString(),
-                              snapshot.data!.response[1].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[2].p,
-                              snapshot.data!.response[2].q.toString(),
-                              snapshot.data!.response[2].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[3].p,
-                              snapshot.data!.response[3].q.toString(),
-                              snapshot.data!.response[3].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[4].p,
-                              snapshot.data!.response[4].q.toString(),
-                              snapshot.data!.response[4].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[5].p,
-                              snapshot.data!.response[5].q.toString(),
-                              snapshot.data!.response[5].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[6].p,
-                              snapshot.data!.response[6].q.toString(),
-                              snapshot.data!.response[6].m.toString()),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
-        ),
-      );
+  // Widget buildtransactions(CarteResponseEntity response) => Container(
+  //       child: FutureBuilder<HistoriquecarteEntity>(
+  //         future: getcarteshistoriques(),
+  //         builder: (context, snapshot) {
+  //           if (snapshot.hasData) {
+  //             return PageView.builder(
+  //               scrollDirection: Axis.vertical,
+  //               physics: NeverScrollableScrollPhysics(),
+  //               itemCount: snapshot.data!.response.length,
+  //               itemBuilder: (context, i) {
+  //                 return Column(
+  //                   children: [
+  //                     Column(
+  //                       children: [
+  //                         buildTitleRows(),
+  //                         buildRows(
+  //                             snapshot.data![0].p,
+  //                             snapshot.data!.response[0].q.toString(),
+  //                             snapshot.data!.response[0].m.toString()),
+  //                         buildRows(
+  //                             snapshot.data!.response[1].p,
+  //                             snapshot.data!.response[1].q.toString(),
+  //                             snapshot.data!.response[1].m.toString()),
+  //                         buildRows(
+  //                             snapshot.data!.response[2].p,
+  //                             snapshot.data!.response[2].q.toString(),
+  //                             snapshot.data!.response[2].m.toString()),
+  //                         buildRows(
+  //                             snapshot.data!.response[3].p,
+  //                             snapshot.data!.response[3].q.toString(),
+  //                             snapshot.data!.response[3].m.toString()),
+  //                         buildRows(
+  //                             snapshot.data!.response[4].p,
+  //                             snapshot.data!.response[4].q.toString(),
+  //                             snapshot.data!.response[4].m.toString()),
+  //                         buildRows(
+  //                             snapshot.data!.response[5].p,
+  //                             snapshot.data!.response[5].q.toString(),
+  //                             snapshot.data!.response[5].m.toString()),
+  //                         buildRows(
+  //                             snapshot.data!.response[6].p,
+  //                             snapshot.data!.response[6].q.toString(),
+  //                             snapshot.data!.response[6].m.toString()),
+  //                       ],
+  //                     )
+  //                   ],
+  //                 );
+  //               },
+  //             );
+  //           }
+  //           return const Center(child: CircularProgressIndicator());
+  //         },
+  //       ),
+  //     );
 
   Widget buildTitleRows() => Padding(
         padding: EdgeInsets.symmetric(vertical: 5),
@@ -274,51 +292,85 @@ class _CarteScreenState extends State<CarteScreen> {
         ),
       );
 
-  Future<CarteResponseEntity> getcartes() async {
-    try {
-      String passwd = Session.generateMd5('4276').toString();
-      Map<String, String> qParams = {
-        'todo': 'LISTCARDS',
-        'key': 'lks@k!rkjjcs662P655h',
-        'U': '0623504276',
-        'P': passwd,
-      };
-      final response =
-          await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      print(jsonData.toString());
-      Session.cardsuser = CarteResponseEntity.fromJson(jsonData);
-      return Session.cardsuser;
-    } catch (err) {
-      return new CarteResponseEntity();
-    }
+  Future<List<CarteResponseEntity>> getcartes(String CODESAP) async {
+    // try {
+    //   String passwd = Session.generateMd5('4276').toString();
+    //   Map<String, String> qParams = {
+    //     'todo': 'LISTCARDS',
+    //     'key': 'lks@k!rkjjcs662P655h',
+    //     'U': '0623504276',
+    //     'P': passwd,
+    //   };
+    //   final response =
+    //       await get(Uri.parse(url).replace(queryParameters: qParams));
+    //   final jsonData = jsonDecode(response.body);
+    //   print(jsonData.toString());
+    //   Session.cardsuser = CarteResponseEntity.fromJson(jsonData);
+    //   return Session.cardsuser;
+    // } catch (err) {
+    //   return new CarteResponseEntity();
+    // }
+    var listcards;
+    final response = await http.post(
+      Uri.parse(Session.url + 'cards'),
+      headers: <String, String>{
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': 'Bearer ' + Session.infosUser.data.token,
+      },
+      body: jsonEncode(<String, String>{
+        'code_sap': CODESAP,
+      }),
+    );
+    listcards = (json.decode(response.body) as List)
+        .map((i) => CarteResponseEntity.fromJson(i))
+        .toList();
+    Session.cardsuser = listcards;
+    return listcards;
   }
 
-  Future<HistoriquecarteEntity> getcarteshistoriques() async {
-    try {
-      String passwd = Session.generateMd5('4276').toString();
-      Map<String, String> qParams = {
-        'todo': 'RECAPE',
-        'key': 'lks@k!rkjjcs662P655h',
-        'U': '0623504276',
-        'P': passwd,
-        'DD': datedebuttopass,
-        'DF': datefintopass,
-        'CARDS': cardsStringtopass,
-      };
-      print('DD${datedebuttopass}DF${datefintopass}CARDS${cardsStringtopass}');
-      final response =
-          await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      print(jsonData.toString());
+  Future<List<HistoriquecarteEntity>> getcarteshistoriques() async {
+    // try {
+    //   String passwd = Session.generateMd5('4276').toString();
+    //   Map<String, String> qParams = {
+    //     'todo': 'RECAPE',
+    //     'key': 'lks@k!rkjjcs662P655h',
+    //     'U': '0623504276',
+    //     'P': passwd,
+    //     'DD': datedebuttopass,
+    //     'DF': datefintopass,
+    //     'CARDS': cardsStringtopass,
+    //   };
+    //   print('DD${datedebuttopass}DF${datefintopass}CARDS${cardsStringtopass}');
+    //   final response =
+    //       await http.get(Uri.parse(url).replace(queryParameters: qParams));
+    //   final jsonData = jsonDecode(response.body);
+    //   print(jsonData.toString());
+    //   return HistoriquecarteEntity.fromJson(jsonData);
+    // } catch (err) {
+    //   return new HistoriquecarteEntity();
+    // }
 
-      return HistoriquecarteEntity.fromJson(jsonData);
-    } catch (err) {
-      return new HistoriquecarteEntity();
-    }
+    final response = await http.post(
+      Uri.parse(Session.url + 'consomation_card'),
+      headers: <String, String>{
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': 'Bearer ' + Session.infosUser.data.token,
+      },
+      body: jsonEncode(<String, String>{
+        'date_debut': datedebuttopass,
+        'date_fin': datefintopass,
+        'pan': cartetopass,
+        'code_sap': Session.infosUser.data.user.codeSap
+      }),
+    );
+    return (json.decode(response.body) as List)
+        .map((i) => HistoriquecarteEntity.fromJson(i))
+        .toList();
   }
 
-  Widget buildProduct(CarteResponseResponse response) => Container(
+  Widget buildProduct(CarteResponseEntity response) => Container(
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -394,6 +446,7 @@ class _CarteScreenState extends State<CarteScreen> {
     // TODO: implement initState
 
     datedebut = new DateTime.now();
+    datefin = new DateTime.now();
     datefin = new DateTime.now();
     super.initState();
   }

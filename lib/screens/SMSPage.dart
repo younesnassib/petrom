@@ -1,18 +1,16 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:petrom_fidelite/models/session.dart';
 import 'package:petrom_fidelite/screens/authentification_page.dart';
-import 'package:petrom_fidelite/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' as IO;
+import '../models/accountcreation.dart';
 import '../models/auth_response_entity.dart';
-import 'package:platform_device_id/platform_device_id.dart';
 
 class SMSPage extends StatefulWidget {
   static const screenRoute = '/sms';
@@ -26,10 +24,7 @@ class SMSPage extends StatefulWidget {
 class _SMSPageState extends State<SMSPage> {
   final url = 'http://card.petrom.ma/api/AttarikPro.php/';
   late AuthResponseEntity authresponse;
-  var telController = new TextEditingController();
-  var passwordController = new TextEditingController();
-  String loginvalue = '';
-  String passwordvalue = '';
+  var codeController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -102,18 +97,15 @@ class _SMSPageState extends State<SMSPage> {
                       Padding(
                         padding: EdgeInsets.all(10),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: OTPTextField(
-                            length: 4,
-                            fieldWidth: 80,
-                            style: TextStyle(fontSize: 17),
-                            textFieldAlignment: MainAxisAlignment.spaceAround,
-                            fieldStyle: FieldStyle.underline,
-                            onCompleted: (pin) {
-                              print("Completed: " + pin);
-                            },
-                          ),
-                        ),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: codeController,
+                              decoration: InputDecoration(
+                                hintText: 'Code',
+                                border: InputBorder.none,
+                              ),
+                            )),
                       ),
                       SizedBox(height: 10),
                       Padding(
@@ -124,11 +116,11 @@ class _SMSPageState extends State<SMSPage> {
                               flex: 1,
                               child: Card(
                                 color: Colors.blue,
-                                child: FlatButton(
-                                  height: 30,
-                                  onPressed: () => {toLogin(context)},
+                                child: TextButton(
+                                  onPressed: () =>
+                                      {verifysms(Session.accountCreation)},
                                   child: Text(
-                                    'Se connecter',
+                                    'Suivant',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,
@@ -146,9 +138,20 @@ class _SMSPageState extends State<SMSPage> {
                         child: new Column(
                           children: <Widget>[
                             new Text('Vous  n' 'avez pas recu le code ? '),
-                            new Text('RENVOYER LE CODE', style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
+                            InkWell(
+                              onTap: () {
+                                if (Session.accountCreation.email != '') {
+                                  sendsmsprocessforcreation(
+                                      Session.accountCreation);
+                                } else
+                                  sendsmsprocess(Session.accountCreation);
+                              },
+                              child: new Text(
+                                'RENVOYER LE CODE',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             )
                           ],
                         ),
@@ -164,90 +167,10 @@ class _SMSPageState extends State<SMSPage> {
     );
   }
 
-  tohome(BuildContext context) {
-    Navigator.of(context).pushNamed(HomePage.screenRoute).then(
-      (result) {
-        if (result != null) {
-          // removeItem(result);
-        }
-      },
-    );
-  }
-
-  Future login(String Username, String Password) async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Center(child: CircularProgressIndicator());
-        });
-    String passwd = generateMd5(Password).toString();
-    try {
-      Map<String, String> qParams = {
-        'todo': 'AUTHENTICATION',
-        'U': Username,
-        'P': passwd,
-        'key': 'lks@k!rkjjcs662P655h',
-      };
-      final response =
-          await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      AuthResponseEntity ARE = AuthResponseEntity.fromJson(jsonData);
-      Navigator.of(context).pop();
-      setState(
-        () {
-          authresponse = ARE;
-          if (authresponse.header.status == 200) {
-            tohome(context);
-            Session.infosUser = authresponse;
-            setUserData(Username, Password);
-          } else {}
-        },
-      );
-    } catch (err) {}
-  }
-
   generateMd5(String data) {
     var bytesToHash = utf8.encode(data);
     var md5Digest = md5.convert(bytesToHash);
     return md5Digest;
-  }
-
-  static Future<void> setUserData(String login, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('login', login);
-    await prefs.setString('password', password);
-  }
-
-  Future<void> getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    loginvalue = await prefs.getString('login') ?? '';
-    passwordvalue = await prefs.getString('password') ?? '';
-    telController.text = loginvalue;
-    passwordController.text = passwordvalue;
-    _getInfo();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUserData();
-  }
-
-  void _getInfo() async {
-    if (IO.Platform.isIOS) {
-      print('login Androiiiiiiid');
-    } else if (IO.Platform.isAndroid) {
-      print('login Iooooooooooos');
-    }
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    final result = await deviceInfoPlugin.deviceInfo;
-    String? deviceId = await PlatformDeviceId.getDeviceId;
-    setState(
-      () {
-        var _info = result.toMap();
-        print(_info.toString());
-      },
-    );
   }
 
   toLogin(BuildContext context) {
@@ -258,5 +181,166 @@ class _SMSPageState extends State<SMSPage> {
         }
       },
     );
+  }
+
+  Future sendsmsprocess(AccountCreation AC) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(child: CircularProgressIndicator());
+        });
+    try {
+      final response = await post(
+        Uri.parse(Session.url + 'login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'password': AC.password,
+          'phone': AC.tel,
+          'device_id': Session.deviceid
+        }),
+      );
+      Navigator.of(context).pop();
+      setState(
+        () {
+          if (response.statusCode == 401) {
+            Fluttertoast.showToast(
+                msg: 'Code envoyé avec succés',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.grey[200],
+                textColor: Colors.black,
+                fontSize: 16.0);
+          } else
+            Fluttertoast.showToast(
+                msg: 'Erreur survenue, merci de reessayer plus tard',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.grey[200],
+                textColor: Colors.black,
+                fontSize: 16.0);
+        },
+      );
+    } catch (err) {}
+  }
+
+  Future sendsmsprocessforcreation(AccountCreation AC) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(child: CircularProgressIndicator());
+        });
+    try {
+      final response = await http.post(
+        Uri.parse(Session.url + 'register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          // 'phone': Common.telFormatToSend(tel),
+          // 'email': email,
+          // 'password': Password,
+          // 'password_confirmation': confirmpassword,
+          // 'device_id': Session.deviceid,
+          'phone': AC.tel,
+          'email': AC.email,
+          'password': AC.password,
+          'password_confirmation': AC.password,
+          'device_id': Session.deviceid,
+          'date_birth': AC.datenaissance,
+          'gender': 'Mr',
+          'adresse': AC.adresse,
+          'profession': AC.profession,
+          'city': AC.city
+        }),
+      );
+      Navigator.of(context).pop();
+      setState(
+        () {
+          if (response.statusCode == 200) {
+            Fluttertoast.showToast(
+                msg: 'Code envoyé avec succés',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.grey[200],
+                textColor: Colors.black,
+                fontSize: 16.0);
+          } else
+            Fluttertoast.showToast(
+                msg: 'Erreur survenue, merci de reessayer plus tard',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.grey[200],
+                textColor: Colors.black,
+                fontSize: 16.0);
+        },
+      );
+    } catch (err) {}
+  }
+
+  Future verifysms(AccountCreation AC) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(child: CircularProgressIndicator());
+        });
+    try {
+      Map<String, String> qParams;
+      if (AC.password == '') {
+        qParams = {
+          'phone': AC.tel,
+          'device_id': Session.deviceid,
+          'code': codeController.text,
+        };
+      } else {
+        qParams = {
+          'phone': AC.tel,
+          'email': AC.email,
+          'password': AC.password,
+          'password_confirmation': AC.password,
+          'device_id': Session.deviceid,
+          'date_birth': AC.datenaissance2,
+          'gender': 'Mr',
+          'adresse': AC.adresse,
+          'profession': AC.profession,
+          'city': AC.city,
+          'code': codeController.text,
+        };
+      }
+
+      final response = await http.post(
+        Uri.parse(Session.url + 'verify_sms'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(qParams),
+      );
+
+      Navigator.of(context).pop();
+      setState(
+        () {
+          if (response.statusCode == 200) {
+            toLogin(context);
+          } else if (response.statusCode == 302) {
+            Fluttertoast.showToast(
+                msg: 'les mots de passes ne sont pas identiques',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.grey[200],
+                textColor: Colors.black,
+                fontSize: 16.0);
+          } else {
+            Fluttertoast.showToast(
+                msg: 'Erreur survenue, merci de reessayer plus tard',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.grey[200],
+                textColor: Colors.black,
+                fontSize: 16.0);
+          }
+        },
+      );
+    } catch (err) {}
   }
 }

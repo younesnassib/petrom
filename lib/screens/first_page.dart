@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:petrom_fidelite/models/session.dart';
 import 'package:petrom_fidelite/screens/account_creation_screen.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/default_infos_entity.dart';
+import '../tools/Common.dart';
 
 class FirstScreen extends StatefulWidget {
   FirstScreen({Key? key}) : super(key: key);
@@ -17,7 +19,6 @@ class FirstScreen extends StatefulWidget {
 
   @override
   State<FirstScreen> createState() => _FirstScreenState();
-
 
   static Future<void> setInfosInStorage(DefaultInfosEntity Infos) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -38,7 +39,8 @@ class FirstScreen extends StatefulWidget {
           'key': 'lks@k!rkjjcs662P655h',
           'version': '0',
         };
-        final response = await get(Uri.parse(url).replace(queryParameters: qParams));
+        final response =
+            await get(Uri.parse(url).replace(queryParameters: qParams));
         final jsonData = jsonDecode(response.body);
         DefaultInfosEntity ARE = DefaultInfosEntity.fromJson(jsonData);
         print(ARE.response.toString());
@@ -93,107 +95,105 @@ class _FirstScreenState extends State<FirstScreen> {
             ),
             Expanded(
               flex: 4,
-              child: Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Image(
-                          image: AssetImage('images/petrom_logo.png'),
-                          height: 60,
-                          width: 60,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(
+                          10,
+                        ),
+                        topLeft: Radius.circular(
+                          10,
+                        ))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Image(
+                        image: AssetImage('images/petrom_logo.png'),
+                        height: 60,
+                        width: 60,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Bienvenue à Petrom',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          'Bienvenue à Petrom',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Decouvrez tous nos produits et services incontournables',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
                         ),
+                        maxLines: 3,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          'Decouvrez tous nos produits et services incontournables',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                          maxLines: 3,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Card(
-                                color: Colors.red,
-                                child: FlatButton(
-                                  height: 30,
-                                  onPressed: () => authentication(context),
-                                  child: Text(
-                                    'Se connecter',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Card(
+                              color: Colors.red,
+                              child: TextButton(
+                                onPressed: () => authentication(context),
+                                child: const Text(
+                                  'Se connecter',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Card(
-                                color: Colors.blue,
-                                child: FlatButton(
-                                  height: 30,
-                                  onPressed: () => accountCreation(context),
-                                  child: Text(
-                                    'Créer un compte',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Card(
+                              color: Colors.blue,
+                              child: TextButton(
+                                onPressed: () => accountCreation(context),
+                                child: const Text(
+                                  'Créer un compte',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          'Mode Demonstration',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
                           ),
-                          maxLines: 2,
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 10),
+                    //   child: Text(
+                    //     textAlign: TextAlign.center,
+                    //     'Mode Demonstration',
+                    //     style: TextStyle(
+                    //       fontSize: 14,
+                    //       color: Colors.red,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //     maxLines: 2,
+                    //   ),
+                    // ),
+                  ],
                 ),
               ),
             ),
@@ -203,7 +203,8 @@ class _FirstScreenState extends State<FirstScreen> {
     );
   }
 
-  accountCreation(BuildContext context) {
+  accountCreation(BuildContext context) async {
+    Session.deviceid = await Common.getUniqueDeviceId();
     Navigator.of(context)
         .pushNamed(
       AccountCreationPage.screenRoute,
@@ -215,7 +216,9 @@ class _FirstScreenState extends State<FirstScreen> {
     });
   }
 
-  authentication(BuildContext context) {
+  authentication(BuildContext context) async {
+    Session.deviceid = await Common.getUniqueDeviceId();
+    print('Session.deviceid ' + Session.deviceid);
     Navigator.of(context)
         .pushNamed(
       AuthentificationPage.screenRoute,

@@ -48,11 +48,11 @@ class _ProfilPageState extends State<ProfilPage> {
                         padding: EdgeInsets.all(5),
                         child: Text(
                           textAlign: TextAlign.center,
-                          Session.infosUser.response.civilite +
-                              ' ' +
-                              Session.infosUser.response.nom +
-                              ' ' +
-                              Session.infosUser.response.prenom,
+                          Session.infosUser.data.user.gender +
+                              ' ' ,
+                              // Session.infosUser.data.user.+
+                              // ' ' +
+                              // Session.infosUser.response.prenom
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

@@ -58,11 +58,14 @@ class ProductDetailState extends State<ProductDetail> {
                 Expanded(
                   flex: 8,
                   child: SingleChildScrollView(
-                      child: Text(widget.product.description,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ))),
+                    child: Text(
+                      widget.product.description,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                 ),
               ]),
             ),

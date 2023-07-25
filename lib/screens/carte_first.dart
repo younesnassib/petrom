@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:petrom_fidelite/models/carte_response_entity.dart';
 import 'package:petrom_fidelite/screens/cartescreen.dart';
 
@@ -12,6 +12,8 @@ import '../models/historiquecarte_entity.dart';
 import '../models/session.dart';
 
 class CarteFirsrScreen extends StatefulWidget {
+  static const screenRoute = '/cartefirst';
+
   CarteFirsrScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class CarteFirsrScreen extends StatefulWidget {
 }
 
 class _CarteFirstScreenState extends State<CarteFirsrScreen> {
-  late Future<CarteResponseEntity> cardsFuture;
+  List<CarteResponseEntity> listcards = [];
   final url = 'http://card.petrom.ma/api/AttarikPro.php/';
   late DateTime datedebut;
   late String cartesstring;
@@ -29,136 +31,57 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 5,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Scrollbar(
-                      child: FutureBuilder<CarteResponseEntity>(
-                        future: cardsFuture,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: snapshot.data!.response.length,
-                              itemBuilder: (context, i) {
+                    Column(
+                      children: [
+                        Scrollbar(
+                          child: FutureBuilder<List<CarteResponseEntity>>(
+                            future: getcartes(Session.infosUser.data.user.codeSap),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                listcards = snapshot.data!;
                                 return Column(
                                   children: [
-                                    buildDateAndCheckAll(
-                                        snapshot.data!.response),
-                                    buildProduct(snapshot.data!.response[i])
+                                    buildDateAndCheckAll(listcards),
+                                    ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (context, i) {
+                                        return Column(
+                                          children: [
+                                            buildProduct(listcards![i])
+                                          ],
+                                        );
+                                      },
+                                    ),
                                   ],
                                 );
-                              },
-                            );
-                          }
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        },
-                      ),
+                              }
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-            flex: 1,
-            child: Center(
-              child: Card(
-                color: Colors.blue,
-                child: FlatButton(
-                  height: 30,
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(CarteScreen.screenRoute, arguments: {
-                      "CARDS": '21983',
-                      'dd':
-                          '${datedebut.year}${getmonth(datedebut.month)}${datedebut.day}',
-                      "df":
-                          '${datefin.year}${getmonth(datefin.month)}${datefin.day}'
-                    }).then(
-                      (result) {
-                        if (result != null) {}
-                      },
-                    );
-                  },
-                  child: const Text(
-                    'Rechercher',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
               ),
-            ))
-      ],
+            ),
+          ],
+        ),
+      ),
     );
   }
-
-  Widget buildtransactions(CarteResponseResponse response) => Container(
-        child: FutureBuilder<HistoriquecarteEntity>(
-          future: getcarteshistoriques(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return PageView.builder(
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: snapshot.data!.response.length,
-                itemBuilder: (context, i) {
-                  return Column(
-                    children: [
-                      Column(
-                        children: [
-                          buildTitleRows(),
-                          buildRows(
-                              snapshot.data!.response[0].p,
-                              snapshot.data!.response[0].q.toString(),
-                              snapshot.data!.response[0].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[1].p,
-                              snapshot.data!.response[1].q.toString(),
-                              snapshot.data!.response[1].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[2].p,
-                              snapshot.data!.response[2].q.toString(),
-                              snapshot.data!.response[2].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[3].p,
-                              snapshot.data!.response[3].q.toString(),
-                              snapshot.data!.response[3].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[4].p,
-                              snapshot.data!.response[4].q.toString(),
-                              snapshot.data!.response[4].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[5].p,
-                              snapshot.data!.response[5].q.toString(),
-                              snapshot.data!.response[5].m.toString()),
-                          buildRows(
-                              snapshot.data!.response[6].p,
-                              snapshot.data!.response[6].q.toString(),
-                              snapshot.data!.response[6].m.toString()),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
-        ),
-      );
 
   Widget buildTitleRows() => Padding(
         padding: EdgeInsets.symmetric(vertical: 5),
@@ -245,49 +168,28 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
         ),
       );
 
-  Future<CarteResponseEntity> getcartes() async {
-    try {
-      String passwd = Session.generateMd5('4276').toString();
-      Map<String, String> qParams = {
-        'todo': 'LISTCARDS',
-        'key': 'lks@k!rkjjcs662P655h',
-        'U': '0623504276',
-        'P': passwd,
-      };
-      final response =
-          await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      print(jsonData.toString());
-      return CarteResponseEntity.fromJson(jsonData);
-    } catch (err) {
-      return new CarteResponseEntity();
-    }
+  Future<List<CarteResponseEntity>> getcartes(String CODESAP) async {
+    final response = await http.post(
+      Uri.parse(Session.url + 'cards'),
+      headers: <String, String>{
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': 'Bearer ' + Session.infosUser.data.token,
+      },
+      body: jsonEncode(<String, String>{
+        'code_sap': CODESAP,
+      }),
+    );
+    Session.cardsuser = (json.decode(response.body) as List)
+        .map((i) => CarteResponseEntity.fromJson(i))
+        .toList();
+    listcards = (json.decode(response.body) as List)
+        .map((i) => CarteResponseEntity.fromJson(i))
+        .toList();
+    return listcards;
   }
 
-  Future<HistoriquecarteEntity> getcarteshistoriques() async {
-    try {
-      String passwd = Session.generateMd5('4276').toString();
-      Map<String, String> qParams = {
-        'todo': 'RECAPE',
-        'key': 'lks@k!rkjjcs662P655h',
-        'U': '0623504276',
-        'P': passwd,
-        'DD': '${datedebut.day}-${datedebut.month}-${datedebut.year}',
-        'DF': '${datefin.day}-${datefin.month}-${datefin.year}',
-        'CARDS': '21983',
-      };
-      final response =
-          await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      print(jsonData.toString());
-
-      return HistoriquecarteEntity.fromJson(jsonData);
-    } catch (err) {
-      return new HistoriquecarteEntity();
-    }
-  }
-
-  Widget buildProduct(CarteResponseResponse response) => Container(
+  Widget buildProduct(CarteResponseEntity response) => Container(
         color: Colors.grey[50],
         margin: EdgeInsets.all(10),
         child: Padding(
@@ -317,7 +219,6 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.black,
-                              fontWeight: FontWeight.bold,
                             ),
                             response.nOM,
                           ),
@@ -328,7 +229,29 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
                 ],
               ),
             ),
-            buildCheckRow(response)
+            // buildCheckRow(response)
+            InkWell(
+              onTap: () {
+                String cardtopass = response.pAN
+                    .substring(response.pAN.length - 5, response.pAN.length);
+                Navigator.of(context)
+                    .pushNamed(CarteScreen.screenRoute, arguments: {
+                  "CARDS": cardtopass,
+                  'dd': '${datedebut.year}${getmonth(datedebut.month)}${datedebut.day}',
+                  "df": '${datefin.year}${getmonth(datefin.month)}${datefin.day}'
+                }).then(
+                  (result) {
+                    if (result != null) {}
+                  },
+                );
+              },
+              child: Image(
+                image: AssetImage('images/arrowright.png'),
+                color: Colors.blue,
+                height: 20,
+                width: 20,
+              ),
+            )
           ]),
         ),
       );
@@ -354,39 +277,44 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
     datedebut = new DateTime.now();
     datefin = new DateTime.now();
     super.initState();
-    cardsFuture = getcartes();
   }
 
-  Widget getcupertinodebut(DateTime d) => Container(
-        width: MediaQuery.of(context).size.width * (100 / 100),
-        child: Center(
-          child: CupertinoButton(
-            child: Row(
-              children: [
-                Text(
-                  '${d.day}-${d.month}-${d.year}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  width: 8, // <-- SEE HERE
-                ),
-                Icon(Icons.date_range_outlined, size: 16, color: Colors.black)
-              ],
-            ),
-            onPressed: () {
-              showCupertinoModalPopup(
-                context: context,
-                builder: (BuildContext context) => SizedBox(
-                  height: 250,
-                  child: DatePickerdebut(d),
-                ),
-              );
-            },
+  Widget getcupertinodebut(DateTime d) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Text('Date debut'),
           ),
-        ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: CupertinoButton(
+              child: Row(
+                children: [
+                  Text(
+                    '${d.day}-${d.month}-${d.year}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8, // <-- SEE HERE
+                  ),
+                  Icon(Icons.date_range_outlined, size: 16, color: Colors.black)
+                ],
+              ),
+              onPressed: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => SizedBox(
+                    height: 250,
+                    child: DatePickerdebut(d),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       );
 
   Widget DatePickerfin(DateTime d) => SizedBox(
@@ -403,32 +331,43 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
         ),
       );
 
-  Widget getcupertinofin(DateTime d) => CupertinoButton(
-        child: Row(children: [
-          Text(
-            '${d.day}-${d.month}-${d.year}',
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black,
+  Widget getcupertinofin(DateTime d) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Text('Date fin'),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: CupertinoButton(
+              child: Row(children: [
+                Text(
+                  '${d.day}-${d.month}-${d.year}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 8, // <-- SEE HERE
+                ),
+                Icon(Icons.date_range_outlined, size: 16, color: Colors.black)
+              ]),
+              onPressed: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => SizedBox(
+                    height: 250,
+                    child: DatePickerfin(d),
+                  ),
+                );
+              },
             ),
           ),
-          SizedBox(
-            width: 8, // <-- SEE HERE
-          ),
-          Icon(Icons.date_range_outlined, size: 16, color: Colors.black)
-        ]),
-        onPressed: () {
-          showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) => SizedBox(
-              height: 250,
-              child: DatePickerfin(d),
-            ),
-          );
-        },
+        ],
       );
 
-  Widget buildCheckRow(CarteResponseResponse response) => Container(
+  Widget buildCheckRow(CarteResponseEntity response) => Container(
         child: Checkbox(
           checkColor: Colors.white,
           activeColor: Colors.blue,
@@ -443,38 +382,44 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
         ),
       );
 
-  buildDateAndCheckAll(List<CarteResponseResponse> response) => Column(
+  buildDateAndCheckAll(List<CarteResponseEntity> response) => Column(
         children: [
-          Row(children: [
-            Expanded(child: Center(child: getcupertinodebut(datedebut))),
-            Expanded(child: Center(child: getcupertinofin(datefin)))
-          ]),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(children: [
+                Expanded(child: getcupertinodebut(datedebut)),
+                Expanded(child: getcupertinofin(datefin))
+              ]),
+            ),
+          ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
-                Expanded(flex: 4, child: Text('Seletionner tout')),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      activeColor: Colors.blue,
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(
-                          () {
-                            isChecked = value!;
-                            for (int j = 0; j < response.length; j++) {
-                              response[j].cheked = isChecked;
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                // Expanded(flex: 4, child: Text('Seletionner tout')),
+                // Expanded(
+                //   flex: 1,
+                //   child: Align(
+                //     alignment: Alignment.centerRight,
+                //     child: Checkbox(
+                //       checkColor: Colors.white,
+                //       activeColor: Colors.blue,
+                //       value: isChecked,
+                //       onChanged: (bool? value) {
+                //         setState(
+                //           () {
+                //             isChecked = value!;
+                //             for (int j = 0; j < response.length; j++) {
+                //               response[j].cheked = isChecked;
+                //             }
+                //           },
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           )

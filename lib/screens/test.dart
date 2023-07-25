@@ -1,6 +1,15 @@
-import 'dart:async';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:petrom_fidelite/screens/stations_list.dart';
+
+import '../models/cartehome.dart';
+import '../models/default_infos_entity.dart';
+import '../models/session.dart';
+import 'alert_add.dart';
+import 'localisation_screen.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
@@ -9,77 +18,74 @@ class TestPage extends StatefulWidget {
   _TestPageState createState() => _TestPageState();
 }
 
-class _TestPageState extends State<TestPage> {
-
-// on below line we are initializing our controller for google maps.
-  Completer<GoogleMapController> _controller = Completer();
-
-// on below line we are specifying our camera position
-  static final CameraPosition _kGoogle = const CameraPosition(
-    target: LatLng(37.42796133580664, -122.885749655962),
-    zoom: 14.4746,
-  );
-
-// on below line we have created list of markers
-  List<Marker> _marker = [];
-  final List<Marker> _list = const [
-    // List of Markers Added on Google Map
-    Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(20.42796133580664, 80.885749655962),
-        infoWindow: InfoWindow(
-          title: 'My Position',
-        )
-    ),
-
-    Marker(
-        markerId: MarkerId('2'),
-        position: LatLng(25.42796133580664, 80.885749655962),
-        infoWindow: InfoWindow(
-          title: 'Location 1',
-        )
-    ),
-
-    Marker(
-        markerId: MarkerId('3'),
-        position: LatLng(20.42796133580664, 73.885749655962),
-        infoWindow: InfoWindow(
-          title: 'Location 2',
-        )
-    ),
-  ];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _marker.addAll(_list);
-  }
+class _TestPageState extends State<LocalisationScreen> {
+  final Set<Marker> stationsmarkers = new Set();
+  late GoogleMapController mapController;
 
   @override
   Widget build(BuildContext context) {
+    getMarkers();
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFF0F9D58),
-          title: Text("GFG"),
+      body: Stack(children: [
+        GoogleMap(
+          initialCameraPosition:
+          CameraPosition(target: LatLng(33, -7), zoom: 10),
+          onMapCreated: (googleMapController) {
+            setState(() {
+              mapController = googleMapController;
+            });
+          },
+          markers: stationsmarkers,
         ),
-        body: Container(
-          // on below line creating google maps.
-          child: GoogleMap(
-            // on below line setting camera position
-            initialCameraPosition: _kGoogle,
-            // on below line specifying map type.
-            mapType: MapType.normal,
-            // on below line setting user location enabled.
-            myLocationEnabled: true,
-            // on below line setting compass enabled.
-            compassEnabled: true,
-            // on beloe line specifying controller on map complete.
-            onMapCreated: (GoogleMapController controller){
-              _controller.complete(controller);
-            },
-          ),
-        )
+        Column(children: [
+          Expanded(flex: 9, child: Container()),
+          Expanded(
+              flex: 1,
+              child: Row(children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(StationsListPage.screenRoute)
+                        .then(
+                          (result) {
+                        if (result != null) {}
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Image(
+                      width: 30,
+                      height: 30,
+                      image: AssetImage('images/liste.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ]))
+        ])
+      ]),
     );
   }
+
+  getMarkers() async {
+    for (var station in Session.informations.response.stations) {
+      BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(),
+        "images/ic_station.png",
+      );
+      stationsmarkers.add(Marker(
+        //add start location marker
+          position: LatLng(
+              double.parse(station.latitude), double.parse(station.longitude)),
+          icon: markerbitmap,
+          markerId: MarkerId(station.id)));
+    }
+  }
 }
+

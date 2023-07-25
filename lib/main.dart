@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:petrom_fidelite/screens/ForgetPassword1.dart';
+import 'package:petrom_fidelite/screens/ForgetPassword2.dart';
+import 'package:petrom_fidelite/screens/ForgetPassword3.dart';
 import 'package:petrom_fidelite/screens/SMSPage.dart';
 import 'package:petrom_fidelite/screens/account_creation_screen.dart';
 import 'package:petrom_fidelite/screens/alert_add.dart';
@@ -7,6 +10,7 @@ import 'package:petrom_fidelite/screens/attarikpro_detail.dart';
 import 'package:petrom_fidelite/screens/authentification_page.dart';
 import 'package:petrom_fidelite/screens/car_add.dart';
 import 'package:petrom_fidelite/screens/car_screen.dart';
+import 'package:petrom_fidelite/screens/carte_first.dart';
 import 'package:petrom_fidelite/screens/cartescreen.dart';
 import 'package:petrom_fidelite/screens/choix_langue.dart';
 import 'package:petrom_fidelite/screens/first_page.dart';
@@ -14,10 +18,12 @@ import 'package:petrom_fidelite/screens/home_page.dart';
 import 'package:petrom_fidelite/screens/information_personnels.dart';
 import 'package:petrom_fidelite/screens/informations_paiement.dart';
 import 'package:petrom_fidelite/screens/parametres_application.dart';
+import 'package:petrom_fidelite/screens/pcard_auth.dart';
 import 'package:petrom_fidelite/screens/product_screen.dart';
 import 'package:petrom_fidelite/screens/station_details.dart';
 import 'package:petrom_fidelite/screens/stations_list.dart';
 import 'package:petrom_fidelite/screens/transactions_page.dart';
+import 'package:petrom_fidelite/screens/vehicule_statistique.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,7 +69,11 @@ class MyApp extends StatelessWidget {
         AttarikProDetail.screenRoute: (ctx) => AttarikProDetail(),
         AccountCreationPage.screenRoute: (ctx) => AccountCreationPage(),
         SMSPage.screenRoute: (ctx) => SMSPage(),
-
+        PcardAuthPage.screenRoute: (ctx) => PcardAuthPage(),
+        CarteFirsrScreen.screenRoute: (ctx) => CarteFirsrScreen(),
+        ForgetPassword1.screenRoute: (ctx) => ForgetPassword1(),
+        ForgetPassword2.screenRoute: (ctx) => ForgetPassword2(),
+        ForgetPassword3.screenRoute: (ctx) => ForgetPassword3()
         // TripDetailScreen.screenRoute: (ctx) => TripDetailScreen(_manageFavorite, _isFovarite),
         // FiltersScreen.screenRoute: (ctx) => FiltersScreen(_filters, _changeFilters),
       },

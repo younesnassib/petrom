@@ -5,65 +5,38 @@ import 'package:petrom_fidelite/generated/json/car_response_entity.g.dart';
 @JsonSerializable()
 class CarResponseEntity {
 
-	late CarResponseHeader header;
-	late List<CarResponseResponse> response;
+	late double id;
+	@JSONField(name: "user_id")
+	late double userId;
+	late String matricule;
+	String libelle="";
+	late String marque;
+	late String modele;
+	late String motorisation;
+	late String carburant;
+	@JSONField(name: "pan_carte")
+	late String panCarte;
+	late String reservoir="0";
+	@JSONField(name: "cons_min")
+	dynamic consMin;
+	@JSONField(name: "cons_max")
+	dynamic consMax;
+	@JSONField(name: "km_init")
+	dynamic kmInit;
+	@JSONField(name: "km_courant")
+	late double kmCourant=0;
+	late String status;
+	dynamic nfc;
+	@JSONField(name: "created_at")
+	late String createdAt;
+	@JSONField(name: "updated_at")
+	late String updatedAt;
   
   CarResponseEntity();
 
   factory CarResponseEntity.fromJson(Map<String, dynamic> json) => $CarResponseEntityFromJson(json);
 
   Map<String, dynamic> toJson() => $CarResponseEntityToJson(this);
-
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-}
-
-@JsonSerializable()
-class CarResponseHeader {
-
-	late int status;
-	late String message;
-	late String messageAr;
-  
-  CarResponseHeader();
-
-  factory CarResponseHeader.fromJson(Map<String, dynamic> json) => $CarResponseHeaderFromJson(json);
-
-  Map<String, dynamic> toJson() => $CarResponseHeaderToJson(this);
-
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-}
-
-@JsonSerializable()
-class CarResponseResponse {
-
-	late String matricule;
-	late String libelle;
-	late String marque;
-	late String modele;
-	late String motorisation;
-	late String carburant;
-	late String reservoir;
-	@JSONField(name: "km_courrant")
-	late String kmCourrant;
-	@JSONField(name: "user_insert")
-	late String userInsert;
-	@JSONField(name: "pan_carte")
-	late String panCarte;
-	@JSONField(name: "date_insert")
-	late String dateInsert;
-	late String tag;
-  
-  CarResponseResponse();
-
-  factory CarResponseResponse.fromJson(Map<String, dynamic> json) => $CarResponseResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => $CarResponseResponseToJson(this);
 
   @override
   String toString() {

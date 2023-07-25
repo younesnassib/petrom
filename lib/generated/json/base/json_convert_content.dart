@@ -21,21 +21,13 @@ typedef JsonConvertFunction<T> = T Function(Map<String, dynamic> json);
 class JsonConvert {
 	static final Map<String, JsonConvertFunction> _convertFuncMap = {
 		(AlerteResponseEntity).toString(): AlerteResponseEntity.fromJson,
-		(AlerteResponseHeader).toString(): AlerteResponseHeader.fromJson,
-		(AlerteResponseResponse).toString(): AlerteResponseResponse.fromJson,
 		(AuthResponseEntity).toString(): AuthResponseEntity.fromJson,
-		(AuthResponseHeader).toString(): AuthResponseHeader.fromJson,
-		(AuthResponseResponse).toString(): AuthResponseResponse.fromJson,
-		(AuthResponseResponseClient).toString(): AuthResponseResponseClient.fromJson,
-		(AuthResponseResponseDashboard).toString(): AuthResponseResponseDashboard.fromJson,
+		(AuthResponseData).toString(): AuthResponseData.fromJson,
+		(AuthResponseDataUser).toString(): AuthResponseDataUser.fromJson,
 		(CarAddEntity).toString(): CarAddEntity.fromJson,
 		(CarAddHeader).toString(): CarAddHeader.fromJson,
 		(CarResponseEntity).toString(): CarResponseEntity.fromJson,
-		(CarResponseHeader).toString(): CarResponseHeader.fromJson,
-		(CarResponseResponse).toString(): CarResponseResponse.fromJson,
 		(CarteResponseEntity).toString(): CarteResponseEntity.fromJson,
-		(CarteResponseHeader).toString(): CarteResponseHeader.fromJson,
-		(CarteResponseResponse).toString(): CarteResponseResponse.fromJson,
 		(DefaultInfosEntity).toString(): DefaultInfosEntity.fromJson,
 		(DefaultInfosHeader).toString(): DefaultInfosHeader.fromJson,
 		(DefaultInfosResponse).toString(): DefaultInfosResponse.fromJson,
@@ -46,11 +38,7 @@ class JsonConvert {
 		(DeletealerteEntity).toString(): DeletealerteEntity.fromJson,
 		(DeletealerteHeader).toString(): DeletealerteHeader.fromJson,
 		(HistoriquecarteEntity).toString(): HistoriquecarteEntity.fromJson,
-		(HistoriquecarteHeader).toString(): HistoriquecarteHeader.fromJson,
-		(HistoriquecarteResponse).toString(): HistoriquecarteResponse.fromJson,
 		(TransactionsEntity).toString(): TransactionsEntity.fromJson,
-		(TransactionsHeader).toString(): TransactionsHeader.fromJson,
-		(TransactionsResponse).toString(): TransactionsResponse.fromJson,
 	};
 
   T? convert<T>(dynamic value) {
@@ -129,26 +117,14 @@ class JsonConvert {
 		if(<AlerteResponseEntity>[] is M){
 			return data.map<AlerteResponseEntity>((Map<String, dynamic> e) => AlerteResponseEntity.fromJson(e)).toList() as M;
 		}
-		if(<AlerteResponseHeader>[] is M){
-			return data.map<AlerteResponseHeader>((Map<String, dynamic> e) => AlerteResponseHeader.fromJson(e)).toList() as M;
-		}
-		if(<AlerteResponseResponse>[] is M){
-			return data.map<AlerteResponseResponse>((Map<String, dynamic> e) => AlerteResponseResponse.fromJson(e)).toList() as M;
-		}
 		if(<AuthResponseEntity>[] is M){
 			return data.map<AuthResponseEntity>((Map<String, dynamic> e) => AuthResponseEntity.fromJson(e)).toList() as M;
 		}
-		if(<AuthResponseHeader>[] is M){
-			return data.map<AuthResponseHeader>((Map<String, dynamic> e) => AuthResponseHeader.fromJson(e)).toList() as M;
+		if(<AuthResponseData>[] is M){
+			return data.map<AuthResponseData>((Map<String, dynamic> e) => AuthResponseData.fromJson(e)).toList() as M;
 		}
-		if(<AuthResponseResponse>[] is M){
-			return data.map<AuthResponseResponse>((Map<String, dynamic> e) => AuthResponseResponse.fromJson(e)).toList() as M;
-		}
-		if(<AuthResponseResponseClient>[] is M){
-			return data.map<AuthResponseResponseClient>((Map<String, dynamic> e) => AuthResponseResponseClient.fromJson(e)).toList() as M;
-		}
-		if(<AuthResponseResponseDashboard>[] is M){
-			return data.map<AuthResponseResponseDashboard>((Map<String, dynamic> e) => AuthResponseResponseDashboard.fromJson(e)).toList() as M;
+		if(<AuthResponseDataUser>[] is M){
+			return data.map<AuthResponseDataUser>((Map<String, dynamic> e) => AuthResponseDataUser.fromJson(e)).toList() as M;
 		}
 		if(<CarAddEntity>[] is M){
 			return data.map<CarAddEntity>((Map<String, dynamic> e) => CarAddEntity.fromJson(e)).toList() as M;
@@ -159,20 +135,8 @@ class JsonConvert {
 		if(<CarResponseEntity>[] is M){
 			return data.map<CarResponseEntity>((Map<String, dynamic> e) => CarResponseEntity.fromJson(e)).toList() as M;
 		}
-		if(<CarResponseHeader>[] is M){
-			return data.map<CarResponseHeader>((Map<String, dynamic> e) => CarResponseHeader.fromJson(e)).toList() as M;
-		}
-		if(<CarResponseResponse>[] is M){
-			return data.map<CarResponseResponse>((Map<String, dynamic> e) => CarResponseResponse.fromJson(e)).toList() as M;
-		}
 		if(<CarteResponseEntity>[] is M){
 			return data.map<CarteResponseEntity>((Map<String, dynamic> e) => CarteResponseEntity.fromJson(e)).toList() as M;
-		}
-		if(<CarteResponseHeader>[] is M){
-			return data.map<CarteResponseHeader>((Map<String, dynamic> e) => CarteResponseHeader.fromJson(e)).toList() as M;
-		}
-		if(<CarteResponseResponse>[] is M){
-			return data.map<CarteResponseResponse>((Map<String, dynamic> e) => CarteResponseResponse.fromJson(e)).toList() as M;
 		}
 		if(<DefaultInfosEntity>[] is M){
 			return data.map<DefaultInfosEntity>((Map<String, dynamic> e) => DefaultInfosEntity.fromJson(e)).toList() as M;
@@ -204,20 +168,8 @@ class JsonConvert {
 		if(<HistoriquecarteEntity>[] is M){
 			return data.map<HistoriquecarteEntity>((Map<String, dynamic> e) => HistoriquecarteEntity.fromJson(e)).toList() as M;
 		}
-		if(<HistoriquecarteHeader>[] is M){
-			return data.map<HistoriquecarteHeader>((Map<String, dynamic> e) => HistoriquecarteHeader.fromJson(e)).toList() as M;
-		}
-		if(<HistoriquecarteResponse>[] is M){
-			return data.map<HistoriquecarteResponse>((Map<String, dynamic> e) => HistoriquecarteResponse.fromJson(e)).toList() as M;
-		}
 		if(<TransactionsEntity>[] is M){
 			return data.map<TransactionsEntity>((Map<String, dynamic> e) => TransactionsEntity.fromJson(e)).toList() as M;
-		}
-		if(<TransactionsHeader>[] is M){
-			return data.map<TransactionsHeader>((Map<String, dynamic> e) => TransactionsHeader.fromJson(e)).toList() as M;
-		}
-		if(<TransactionsResponse>[] is M){
-			return data.map<TransactionsResponse>((Map<String, dynamic> e) => TransactionsResponse.fromJson(e)).toList() as M;
 		}
 
 		debugPrint("${M.toString()} not found");

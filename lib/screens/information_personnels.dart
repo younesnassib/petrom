@@ -17,35 +17,21 @@ class InformationPersonnelsState extends State<InformationPersonnels> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text('Mes informations personnels',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          )),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            buildRows(
-                'Nom et Prenom',
-                Session.infosUser.response.civilite +
-                    ' ' +
-                    Session.infosUser.response.nom +
-                    ' ' + Session.infosUser.response.prenom),
-            buildRows('Date de naissance', Session.infosUser.response.dateActivation),
-            buildRows('Sexe', Session.infosUser.response.civilite),
-            buildRows('Email', Session.infosUser.response.email),
-            buildRows('Type de vehicule', Session.infosUser.response.type),
-            buildRows('telephone', Session.infosUser.response.tel)
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              buildRows('Date de naissance', Session.infosUser.data.user.dateBirth),
+              buildRows('Email', Session.infosUser.data.user.email),
+              buildRows('Telephone', Session.infosUser.data.user.phone),
+              buildRows('Profession', Session.infosUser.data.user.profession),
+              buildRows('Adresse', Session.infosUser.data.user.adresse),
+              buildRows('Ville', Session.infosUser.data.user.city),
+            ],
+          ),
         ),
       ),
     );

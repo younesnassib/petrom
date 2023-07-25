@@ -66,8 +66,10 @@ class StationDetailsState extends State<StationDetails> {
               color: Colors.white,
               padding: EdgeInsets.all(10),
               width: double.infinity,
-              child: FlatButton(
-                color: Colors.blue,
+              child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue, // Background Color
+                  ),
                 onPressed: () => showDialog(
                     context: context,
                     builder: (BuildContext context) {

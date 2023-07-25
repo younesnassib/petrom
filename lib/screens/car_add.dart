@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:petrom_fidelite/models/session.dart';
 import 'package:petrom_fidelite/screens/first_page.dart';
 import '../models/car_add_entity.dart';
 import '../models/carte_response_entity.dart';
+import '../tools/Common.dart';
 import 'car_screen.dart';
 
 class CarAdd extends StatefulWidget {
@@ -30,9 +32,13 @@ class CarAddState extends State<CarAdd> {
   var CarteController = new TextEditingController();
   var CapacitereservoirController = new TextEditingController();
   var MatriculeController = new TextEditingController();
-  final url = 'http://card.petrom.ma/api/AttarikPro.php/';
+  var Matricule2Controller = new TextEditingController();
+  var Matricule3Controller = new TextEditingController();
 
+  // final url = 'http://card.petrom.ma/api/AttarikPro.php/';
+  final url = Session.url + 'vehicules';
   String typecarburant = '';
+  String arabMatricule = '';
   String typevoiture = '';
   String marque = '';
   String carte = '';
@@ -83,9 +89,31 @@ class CarAddState extends State<CarAdd> {
             child: Center(
               child: Card(
                 color: Colors.blue,
-                child: FlatButton(
-                  height: 30,
-                  onPressed: () => addcar(),
+                child: TextButton(
+                  //   'matricule': MatriculeController.text +
+                  // '.' +
+                  // Matricule +
+                  //   '.' +
+                  //   Matricule3Controller.text,
+                  //   'marque': marque,
+                  //   'reservoir': CapacitereservoirController.text,
+                  //   'pan_carte': carte,
+                  //   'modele': carte,
+                  //   'motorisation': typevoiture,
+                  //   'carburant': typecarburant,
+                  //   'libelle': NomController.text,
+                  //   'reservoir': CapacitereservoirController.text,
+                  //   'km_courant': KilometrageController.text,
+                  onPressed: () => {
+                    if (NomController.text == '' ||
+                        CapacitereservoirController.text == '' ||
+                        KilometrageController.text == '' ||
+                        MatriculeController.text == '' ||
+                        Matricule3Controller.text == '')
+                      {Common.showToast('Veuillez remplire tous les champs ')}
+                    else
+                      addcar()
+                  },
                   child: Text(
                     'Ajouter un vehicule',
                     style: TextStyle(
@@ -185,13 +213,45 @@ class CarAddState extends State<CarAdd> {
         controller: CapacitereservoirController,
       );
     } else if (title == "Matricule") {
-      return TextField(
-        decoration: InputDecoration(border: InputBorder.none, hintText: title),
-        controller: MatriculeController,
+      return Container(
+        width: double.infinity,
+        child: Row(children: [
+          Expanded(
+            flex: 5,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              maxLength: 5,
+              decoration: InputDecoration(border: InputBorder.none),
+              controller: MatriculeController,
+            ),
+          ),
+          Expanded(flex: 1, child: Text(textAlign: TextAlign.center, "-")),
+          Expanded(
+              flex: 1,
+              child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: arabMatricule,
+                  items: getArabMatriculePickerItems()
+                      .map((item) => DropdownMenuItem<String>(
+                          value: item, child: Text(item)))
+                      .toList(),
+                  onChanged: (item) => setState(() => arabMatricule = item!))),
+          Expanded(flex: 1, child: Text(textAlign: TextAlign.center, "-")),
+          Expanded(
+              flex: 2,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                maxLength: 2,
+                decoration: InputDecoration(border: InputBorder.none),
+                controller: Matricule3Controller,
+              )),
+        ]),
       );
     } else
       return TextField(
-        decoration: InputDecoration(border: InputBorder.none, hintText: title),
+        decoration: InputDecoration(border: InputBorder.none),
       );
   }
 
@@ -201,6 +261,10 @@ class CarAddState extends State<CarAdd> {
       itemsCurrency.add(currency);
     }
     return itemsCurrency;
+  }
+
+  List<String> getArabMatriculePickerItems() {
+    return ["أ", "ب", "د", "ه", "و", "ط", "ي"];
   }
 
   List<String> getTypeVoiturePickerItems() {
@@ -222,7 +286,7 @@ class CarAddState extends State<CarAdd> {
 
   List<String> getCartePickerItems() {
     List<String> types = [];
-    for (var currency in Session.cardsuser.response) {
+    for (var currency in Session.cardsuser) {
       types.add(currency.pAN);
     }
     return types;
@@ -235,7 +299,8 @@ class CarAddState extends State<CarAdd> {
         .informations.response.marquevehicules[indextypevoiture].marque[0];
     typecarburant = Session.informations.response.carburants[0];
     typevoiture = Session.informations.response.marquevehicules[0].nom;
-    carte = Session.cardsuser.response[0].pAN;
+    carte = Session.cardsuser[0].pAN;
+    arabMatricule = "أ";
     super.initState();
   }
 
@@ -251,51 +316,86 @@ class CarAddState extends State<CarAdd> {
         builder: (context) {
           return Center(child: CircularProgressIndicator());
         });
-    String passwd = Session.generateMd5('4276').toString();
     try {
+      String Matricule = '';
+      switch (arabMatricule) {
+        case "أ":
+          Matricule = 'A';
+          break;
+        case "ب":
+          Matricule = 'B';
+          break;
+        case "د":
+          Matricule = 'D';
+          break;
+        case "ه":
+          Matricule = 'H';
+          break;
+        case "و":
+          Matricule = 'O';
+          break;
+        case "ط":
+          Matricule = 'T';
+          break;
+        case "ي":
+          Matricule = 'Y';
+          break;
+      }
+      var headers = {
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': 'Bearer ' + Session.infosUser.data.token
+      };
+      var request = MultipartRequest('POST', Uri.parse(url));
+      request.headers.addAll(headers);
       Map<String, String> qParams = {
-        'todo': 'INSERTVEHICULE',
-        'U': '0623504276',
-        'P': passwd,
-        'key': 'lks@k!rkjjcs662P655h',
+        // 'todo': 'INSERTVEHICULE',
+        // 'U': '0623504276',
+        // 'P': Session.password,
+        // 'key': 'lks@k!rkjjcs662P655h',
+        // 'marque': marque,
+        // 'motorisation': typevoiture,
+        // 'carburant': typecarburant,
+        // 'pan_carte': carte,
+        // 'op': 'insert',
+        // 'matricule': MatriculeController.text +
+        //     '.' +
+        //     Matricule +
+        //     '.' +
+        //     Matricule3Controller.text,
+        // 'libelle': NomController.text,
+        // 'reservoir': CapacitereservoirController.text,
+        // 'km_courant': KilometrageController.text,
+        'matricule': MatriculeController.text +
+            '.' +
+            Matricule +
+            '.' +
+            Matricule3Controller.text,
         'marque': marque,
+        'reservoir': CapacitereservoirController.text,
+        'pan_carte': carte,
+        'modele': carte,
         'motorisation': typevoiture,
         'carburant': typecarburant,
-        'pan_carte': carte,
-        'op': 'insert',
-        'matricule': MatriculeController.text,
         'libelle': NomController.text,
         'reservoir': CapacitereservoirController.text,
         'km_courant': KilometrageController.text,
       };
-      final response = await get(Uri.parse(url).replace(queryParameters: qParams));
-      final jsonData = jsonDecode(response.body);
-      CarAddEntity ARE = CarAddEntity.fromJson(jsonData);
+      request.fields.addAll(qParams);
+      final response = await request.send();
       Navigator.of(context).pop();
-      setState(
-        () {
-          caraddresponse = ARE;
-          if (caraddresponse.header.status == 200) {
-            tocars(context);
-          } else {}
-        },
-      );
-    } catch (err) {}
-  }
-
-  generateMd5(String data) {
-    var bytesToHash = utf8.encode(data);
-    var md5Digest = md5.convert(bytesToHash);
-    return md5Digest;
+      if (response.statusCode == 200) {
+        print('test bien');
+        tocars(context);
+      } else {
+        print('test non bien');
+      }
+    } catch (err) {
+      print('test crash');
+    }
   }
 
   void tocars(BuildContext context) {
-    Navigator.of(context).pushNamed(CarPage.screenRoute).then(
-      (result) {
-        if (result != null) {
-          // removeItem(result);
-        }
-      },
-    );
+    Navigator.pushReplacementNamed(context, CarPage.screenRoute);
   }
 }

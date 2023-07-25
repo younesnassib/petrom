@@ -7,6 +7,7 @@ import 'package:petrom_fidelite/screens/attarikpro_detail.dart';
 import 'package:petrom_fidelite/screens/car_screen.dart';
 import 'package:petrom_fidelite/screens/cartescreen.dart';
 import 'package:petrom_fidelite/screens/enseigne_detail.dart';
+import 'package:petrom_fidelite/screens/pcard_auth.dart';
 import 'package:petrom_fidelite/screens/product_detail.dart';
 import 'package:petrom_fidelite/screens/product_screen.dart';
 
@@ -255,8 +256,9 @@ class Acceuil extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 10),
-                  TopButtons(context),
+                  Session.infosUser.data.user.codeSap != ''
+                      ? TopButtons(context)
+                      : new Container(),
                   SizedBox(height: 10),
                   Container(
                     child: Row(
@@ -342,7 +344,7 @@ class Acceuil extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: Text(
                         textAlign: TextAlign.left,
-                        'Nos Enseignes ',
+                        'Nos Enseignes et partenaires',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.blue,
@@ -520,22 +522,80 @@ class Acceuil extends StatelessWidget {
         ),
       );
 
-  Widget TopButtons(BuildContext context) => Row(children: [
-        Expanded(
-          child: Material(
-            borderRadius: BorderRadius.circular(10),
-            elevation: 4,
-            shadowColor: Colors.grey[50],
-            child: OutlinedButton(
-                onPressed: () => {
-                      Navigator.of(context).pushNamed(CarPage.screenRoute).then(
-                        (result) {
-                          if (result != null) {
-                            // removeItem(result);
-                          }
+  Widget TopButtons(BuildContext context) => Column(
+    children: [
+      SizedBox(height: 10),
+      Row(children: [
+            Expanded(
+              child: Material(
+                borderRadius: BorderRadius.circular(10),
+                elevation: 4,
+                shadowColor: Colors.grey[50],
+                child: OutlinedButton(
+                    onPressed: () => {
+                          if (Session.infosUser.data.user.codeSap != '')
+                            {
+                              Navigator.of(context)
+                                  .pushNamed(CarPage.screenRoute)
+                                  .then(
+                                (result) {
+                                  if (result != null) {
+                                    // removeItem(result);
+                                  }
+                                },
+                              )
+                            }
+                          else
+                            {
+                              Navigator.of(context)
+                                  .pushNamed(PcardAuthPage.screenRoute)
+                                  .then(
+                                (result) {
+                                  if (result != null) {
+                                    // removeItem(result);
+                                  }
+                                },
+                              )
+                            }
                         },
-                      )
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(200, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        side: BorderSide(width: 2.0, color: Color(0xFF42A5F5)),
+                        textStyle:
+                            TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Vehicule'),
+                        SizedBox(width: 12),
+                        Image(
+                            image: AssetImage('images/auto.png'),
+                            height: 30,
+                            width: 30,
+                            color: Color(0xFF42A5F5)),
+                      ],
+                    )),
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+                child: Material(
+              borderRadius: BorderRadius.circular(10),
+              elevation: 4,
+              shadowColor: Colors.grey[50],
+              child: OutlinedButton(
+                onPressed: () => {
+                  Navigator.of(context).pushNamed(AlertePage.screenRoute).then(
+                    (result) {
+                      if (result != null) {
+                        // removeItem(result);
+                      }
                     },
+                  )
+                },
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(200, 60),
                     shape: RoundedRectangleBorder(
@@ -547,56 +607,20 @@ class Acceuil extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Vehicule'),
+                    Text('Alerte'),
                     SizedBox(width: 12),
                     Image(
-                        image: AssetImage('images/auto.png'),
+                        image: AssetImage('images/alerte.png'),
                         height: 30,
                         width: 30,
                         color: Color(0xFF42A5F5)),
                   ],
-                )),
-          ),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-            child: Material(
-          borderRadius: BorderRadius.circular(10),
-          elevation: 4,
-          shadowColor: Colors.grey[50],
-          child: OutlinedButton(
-            onPressed: () => {
-              Navigator.of(context).pushNamed(AlertePage.screenRoute).then(
-                (result) {
-                  if (result != null) {
-                    // removeItem(result);
-                  }
-                },
-              )
-            },
-            style: ElevatedButton.styleFrom(
-                fixedSize: Size(200, 60),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
                 ),
-                side: BorderSide(width: 2.0, color: Color(0xFF42A5F5)),
-                textStyle:
-                    TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Alerte'),
-                SizedBox(width: 12),
-                Image(
-                    image: AssetImage('images/alerte.png'),
-                    height: 30,
-                    width: 30,
-                    color: Color(0xFF42A5F5)),
-              ],
-            ),
-          ),
-        ))
-      ]);
+              ),
+            ))
+          ]),
+    ],
+  );
 
   Widget buildEnseigne(BuildContext context, Enseigne enseigne) => Container(
         decoration: BoxDecoration(
