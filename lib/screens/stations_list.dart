@@ -71,6 +71,7 @@ class _StationsPageState extends State<StationsListPage> {
               builder: (context) => StationDetails(stationRecup: response)));
         },
         child: Material(
+          color: Colors.white,
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),

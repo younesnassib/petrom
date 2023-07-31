@@ -9,9 +9,21 @@ class CarteResponseEntity {
 	late String pAN;
 	@JSONField(name: "NOM")
 	late String nOM;
+	late String nomsurlacarte;
+	late String plafondJ;
+	late String plafondH;
+	late String plafondM;
+	late String plafondHL;
+	late String plafondJL;
+	late String plafondML;
+	@JSONField(name: "Listevehicules")
+	late String listevehicules;
+	late String typecarte;
+	late String listeproduit;
+	@JSONField(name: "Idclient")
+	late String idclient;
 	@JSONField(name: "VHS")
 	late String vHS;
-  bool cheked =false ;
   
   CarteResponseEntity();
 

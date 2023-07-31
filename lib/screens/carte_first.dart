@@ -43,13 +43,14 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
                       children: [
                         Scrollbar(
                           child: FutureBuilder<List<CarteResponseEntity>>(
-                            future: getcartes(Session.infosUser.data.user.codeSap),
+                            future:
+                                getcartes(Session.infosUser.data.user.codeSap),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 listcards = snapshot.data!;
                                 return Column(
                                   children: [
-                                    buildDateAndCheckAll(listcards),
+                                    getTitle(),
                                     ListView.builder(
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
@@ -197,32 +198,123 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
           child: Row(children: [
             Expanded(
               flex: 4,
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     child: Column(
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            response.pAN,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            Text(
+                              'PAN :',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
+                            Text(
+                              response.pAN,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            response.nOM,
-                          ),
+                          ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Nom :',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                                response.nomsurlacarte,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       'Plafond Journalier :',
+                        //       style: TextStyle(
+                        //         fontSize: 14,
+                        //         color: Colors.black,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //     Align(
+                        //       alignment: Alignment.centerLeft,
+                        //       child: Text(
+                        //         style: TextStyle(
+                        //           fontSize: 18,
+                        //           color: Colors.black,
+                        //         ),
+                        //         response.plafondJ,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       'Plafonds Hebdomadaire :',
+                        //       style: TextStyle(
+                        //         fontSize: 14,
+                        //         color: Colors.black,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //     Align(
+                        //       alignment: Alignment.centerLeft,
+                        //       child: Text(
+                        //         style: TextStyle(
+                        //           fontSize: 18,
+                        //           color: Colors.black,
+                        //         ),
+                        //         response.plafondH,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       'Plafonds Mensuelle :',
+                        //       style: TextStyle(
+                        //         fontSize: 14,
+                        //         color: Colors.black,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //     Align(
+                        //       alignment: Alignment.centerLeft,
+                        //       child: Text(
+                        //         style: TextStyle(
+                        //           fontSize: 18,
+                        //           color: Colors.black,
+                        //         ),
+                        //         response.plafondM,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -230,26 +322,31 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
               ),
             ),
             // buildCheckRow(response)
-            InkWell(
-              onTap: () {
-                String cardtopass = response.pAN
-                    .substring(response.pAN.length - 5, response.pAN.length);
-                Navigator.of(context)
-                    .pushNamed(CarteScreen.screenRoute, arguments: {
-                  "CARDS": cardtopass,
-                  'dd': '${datedebut.year}${getmonth(datedebut.month)}${datedebut.day}',
-                  "df": '${datefin.year}${getmonth(datefin.month)}${datefin.day}'
-                }).then(
-                  (result) {
-                    if (result != null) {}
-                  },
-                );
-              },
-              child: Image(
-                image: AssetImage('images/arrowright.png'),
-                color: Colors.blue,
-                height: 20,
-                width: 20,
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () {
+                  String cardtopass = response.pAN
+                      .substring(response.pAN.length - 5, response.pAN.length);
+                  Navigator.of(context)
+                      .pushNamed(CarteScreen.screenRoute, arguments: {
+                    "CARDS": cardtopass,
+                    'dd':
+                        '${datedebut.year}${getmonth(datedebut.month)}${datedebut.day}',
+                    "df":
+                        '${datefin.year}${getmonth(datefin.month)}${datefin.day}'
+                  }).then(
+                    (result) {
+                      if (result != null) {}
+                    },
+                  );
+                },
+                child: Image(
+                  image: AssetImage('images/arrowright.png'),
+                  color: Colors.blue,
+                  height: 20,
+                  width: 20,
+                ),
               ),
             )
           ]),
@@ -367,64 +464,68 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
         ],
       );
 
-  Widget buildCheckRow(CarteResponseEntity response) => Container(
-        child: Checkbox(
-          checkColor: Colors.white,
-          activeColor: Colors.blue,
-          value: response.cheked,
-          onChanged: (bool? value) {
-            setState(
-              () {
-                response.cheked = value!;
-              },
-            );
-          },
-        ),
-      );
+  // buildDateAndCheckAll(List<CarteResponseEntity> response) => Column(
+  //       children: [
+  //         Padding(
+  //           padding: EdgeInsets.symmetric(vertical: 10),
+  //           child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 10),
+  //             child: Row(children: [
+  //               Expanded(child: getcupertinodebut(datedebut)),
+  //               Expanded(child: getcupertinofin(datefin))
+  //             ]),
+  //           ),
+  //         ),
+  //         Container(
+  //           margin: EdgeInsets.symmetric(horizontal: 10),
+  //           child: Row(
+  //             children: [
+  //               // Expanded(flex: 4, child: Text('Seletionner tout')),
+  //               // Expanded(
+  //               //   flex: 1,
+  //               //   child: Align(
+  //               //     alignment: Alignment.centerRight,
+  //               //     child: Checkbox(
+  //               //       checkColor: Colors.white,
+  //               //       activeColor: Colors.blue,
+  //               //       value: isChecked,
+  //               //       onChanged: (bool? value) {
+  //               //         setState(
+  //               //           () {
+  //               //             isChecked = value!;
+  //               //             for (int j = 0; j < response.length; j++) {
+  //               //               response[j].cheked = isChecked;
+  //               //             }
+  //               //           },
+  //               //         );
+  //               //       },
+  //               //     ),
+  //               //   ),
+  //               // ),
+  //             ],
+  //           ),
+  //         )
+  //       ],
+  //     );
 
-  buildDateAndCheckAll(List<CarteResponseEntity> response) => Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(children: [
-                Expanded(child: getcupertinodebut(datedebut)),
-                Expanded(child: getcupertinofin(datefin))
-              ]),
-            ),
+  Widget getTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          textAlign: TextAlign.left,
+          'Mes Cartes',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                // Expanded(flex: 4, child: Text('Seletionner tout')),
-                // Expanded(
-                //   flex: 1,
-                //   child: Align(
-                //     alignment: Alignment.centerRight,
-                //     child: Checkbox(
-                //       checkColor: Colors.white,
-                //       activeColor: Colors.blue,
-                //       value: isChecked,
-                //       onChanged: (bool? value) {
-                //         setState(
-                //           () {
-                //             isChecked = value!;
-                //             for (int j = 0; j < response.length; j++) {
-                //               response[j].cheked = isChecked;
-                //             }
-                //           },
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
-              ],
-            ),
-          )
-        ],
-      );
+          maxLines: 4,
+        ),
+      ),
+    );
+  }
 
   String getmonth(int month) {
     String lengh = month.toString();

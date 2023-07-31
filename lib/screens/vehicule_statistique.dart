@@ -151,11 +151,12 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                               children: [
                                 Expanded(flex: 1, child: Text('Carburant :')),
                                 Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      response.carburant,
-                                      maxLines: 2,
-                                    )),
+                                  flex: 1,
+                                  child: Text(
+                                    response.carburant,
+                                    maxLines: 2,
+                                  ),
+                                ),
                               ],
                             ),
                             SizedBox(height: 10),

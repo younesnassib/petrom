@@ -11,13 +11,53 @@ CarteResponseEntity $CarteResponseEntityFromJson(Map<String, dynamic> json) {
 	if (nOM != null) {
 		carteResponseEntity.nOM = nOM;
 	}
+	final String? nomsurlacarte = jsonConvert.convert<String>(json['nomsurlacarte']);
+	if (nomsurlacarte != null) {
+		carteResponseEntity.nomsurlacarte = nomsurlacarte;
+	}
+	final String? plafondJ = jsonConvert.convert<String>(json['plafondJ']);
+	if (plafondJ != null) {
+		carteResponseEntity.plafondJ = plafondJ;
+	}
+	final String? plafondH = jsonConvert.convert<String>(json['plafondH']);
+	if (plafondH != null) {
+		carteResponseEntity.plafondH = plafondH;
+	}
+	final String? plafondM = jsonConvert.convert<String>(json['plafondM']);
+	if (plafondM != null) {
+		carteResponseEntity.plafondM = plafondM;
+	}
+	final String? plafondHL = jsonConvert.convert<String>(json['plafondHL']);
+	if (plafondHL != null) {
+		carteResponseEntity.plafondHL = plafondHL;
+	}
+	final String? plafondJL = jsonConvert.convert<String>(json['plafondJL']);
+	if (plafondJL != null) {
+		carteResponseEntity.plafondJL = plafondJL;
+	}
+	final String? plafondML = jsonConvert.convert<String>(json['plafondML']);
+	if (plafondML != null) {
+		carteResponseEntity.plafondML = plafondML;
+	}
+	final String? listevehicules = jsonConvert.convert<String>(json['Listevehicules']);
+	if (listevehicules != null) {
+		carteResponseEntity.listevehicules = listevehicules;
+	}
+	final String? typecarte = jsonConvert.convert<String>(json['typecarte']);
+	if (typecarte != null) {
+		carteResponseEntity.typecarte = typecarte;
+	}
+	final String? listeproduit = jsonConvert.convert<String>(json['listeproduit']);
+	if (listeproduit != null) {
+		carteResponseEntity.listeproduit = listeproduit;
+	}
+	final String? idclient = jsonConvert.convert<String>(json['Idclient']);
+	if (idclient != null) {
+		carteResponseEntity.idclient = idclient;
+	}
 	final String? vHS = jsonConvert.convert<String>(json['VHS']);
 	if (vHS != null) {
 		carteResponseEntity.vHS = vHS;
-	}
-	final bool? cheked = jsonConvert.convert<bool>(json['cheked']);
-	if (cheked != null) {
-		carteResponseEntity.cheked = cheked;
 	}
 	return carteResponseEntity;
 }
@@ -26,7 +66,17 @@ Map<String, dynamic> $CarteResponseEntityToJson(CarteResponseEntity entity) {
 	final Map<String, dynamic> data = <String, dynamic>{};
 	data['PAN'] = entity.pAN;
 	data['NOM'] = entity.nOM;
+	data['nomsurlacarte'] = entity.nomsurlacarte;
+	data['plafondJ'] = entity.plafondJ;
+	data['plafondH'] = entity.plafondH;
+	data['plafondM'] = entity.plafondM;
+	data['plafondHL'] = entity.plafondHL;
+	data['plafondJL'] = entity.plafondJL;
+	data['plafondML'] = entity.plafondML;
+	data['Listevehicules'] = entity.listevehicules;
+	data['typecarte'] = entity.typecarte;
+	data['listeproduit'] = entity.listeproduit;
+	data['Idclient'] = entity.idclient;
 	data['VHS'] = entity.vHS;
-	data['cheked'] = entity.cheked;
 	return data;
 }

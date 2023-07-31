@@ -1,5 +1,7 @@
 import 'package:petrom_fidelite/generated/json/base/json_convert_content.dart';
 import 'package:petrom_fidelite/models/default_infos_entity.dart';
+import 'dart:ffi';
+
 
 DefaultInfosEntity $DefaultInfosEntityFromJson(Map<String, dynamic> json) {
 	final DefaultInfosEntity defaultInfosEntity = DefaultInfosEntity();
@@ -174,6 +176,10 @@ DefaultInfosResponseStations $DefaultInfosResponseStationsFromJson(Map<String, d
 	if (elephant != null) {
 		defaultInfosResponseStations.elephant = elephant;
 	}
+	final String? distance = jsonConvert.convert<String>(json['distance']);
+	if (distance != null) {
+		defaultInfosResponseStations.distance = distance;
+	}
 	final String? datePrix = jsonConvert.convert<String>(json['date_prix']);
 	if (datePrix != null) {
 		defaultInfosResponseStations.datePrix = datePrix;
@@ -206,6 +212,7 @@ Map<String, dynamic> $DefaultInfosResponseStationsToJson(DefaultInfosResponseSta
 	data['tel'] = entity.tel;
 	data['melange'] = entity.melange;
 	data['elephant'] = entity.elephant;
+	data['distance'] = entity.distance;
 	data['date_prix'] = entity.datePrix;
 	data['VERSION'] = entity.vERSION;
 	return data;

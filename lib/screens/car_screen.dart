@@ -101,7 +101,7 @@ class _CarPageState extends State<CarPage> {
                       ),
                     ),
                   ),
-                ))
+                ),)
           ],
         ),
       ),
