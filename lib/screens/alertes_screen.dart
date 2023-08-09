@@ -45,76 +45,54 @@ class _AlertePageState extends State<AlertePage> {
             'Mes alertes',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.black,
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold
             ),
           ),
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        Scrollbar(
-                          child: FutureBuilder<List<AlerteResponseEntity>>(
-                            future: getalertes(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, i) {
-                                    print(snapshot.data![i].toString());
-                                    return buildProduct(snapshot.data![i]);
-                                  },
-                                );
-                              } else {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                            },
+        body: Container(
+          margin: EdgeInsets.all(5),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 5,
+                child: SingleChildScrollView(
+                  child: Column(
+                        children: [
+                          Scrollbar(
+                            child: FutureBuilder<List<AlerteResponseEntity>>(
+                              future: getalertes(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, i) {
+                                      print(snapshot.data![i].toString());
+                                      return buildProduct(snapshot.data![i]);
+                                    },
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-                flex: 1,
-                child: Center(
-                  child: Card(
-                    color: Colors.blue,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(AlerteAddPage.screenRoute)
-                            .then(
-                          (result) {
-                            if (result != null) {}
-                          },
-                        );
-                      },
-                      child: Text(
-                        'Ajouter une alerte',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ))
-          ],
+
+              buildButton()
+
+            ],
+          ),
         ),
       ),
     );
@@ -151,9 +129,16 @@ class _AlertePageState extends State<AlertePage> {
   //       ),
   //     );
   Widget buildProduct(AlerteResponseEntity response) => Container(
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          gradient: LinearGradient(
+              colors: [Colors.greysecondary, Colors.greyprimary],
+              begin: Alignment.topCenter),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 2, // Border width
+          ),
         ),
         child: Row(children: [
           Expanded(
@@ -167,7 +152,7 @@ class _AlertePageState extends State<AlertePage> {
                         image: AssetImage('images/alerte.png'),
                         height: 50,
                         width: 50,
-                        color: Color(0xFF42A5F5)),
+                        color: Colors.blueprimary),
                   ),
                 ),
                 Expanded(
@@ -179,14 +164,28 @@ class _AlertePageState extends State<AlertePage> {
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Expanded(flex: 1, child: Text('Nom de l alerte :')),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  'Nom de l alerte :',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blueprimary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
                             Expanded(flex: 1, child: Text(response.nomAlert)),
                           ],
                         ),
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Expanded(flex: 1, child: Text('Matricule :')),
+                            Expanded(flex: 1, child: Text('Matricule :',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold,
+                              ),)),
                             Expanded(
                                 flex: 1,
                                 child: Text(
@@ -198,7 +197,12 @@ class _AlertePageState extends State<AlertePage> {
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Expanded(flex: 1, child: Text('Derniere Alerte :')),
+                            Expanded(flex: 1, child: Text('Derniere Alerte :',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold,
+                              ),)),
                             Expanded(
                               flex: 1,
                               child: Text(
@@ -211,7 +215,12 @@ class _AlertePageState extends State<AlertePage> {
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Expanded(flex: 1, child: Text('Alerte Suivante :')),
+                            Expanded(flex: 1, child: Text('Alerte Suivante :',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold,
+                              ),)),
                             Expanded(
                               flex: 1,
                               child: Text(
@@ -286,18 +295,17 @@ class _AlertePageState extends State<AlertePage> {
               () => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Modification d' 'alerte'),
+                  title: Text('Modification d' 'alerte',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold)),
                   content: Text('Voulez vous vraiment modifier cette alerte ?'),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Non')),
+                        child: Text('Non',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold))),
                     TextButton(
-                      child: Text('Oui'),
+                      child: Text('Oui',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold)),
                       onPressed: () {
                         Navigator.pop(context);
                         update(context, response);
-                        // Navigate to second route when tapped.
                       },
                     )
                   ],
@@ -315,15 +323,15 @@ class _AlertePageState extends State<AlertePage> {
               () => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Suppression d' 'alerte'),
+                  title: Text('Suppression d' 'alerte',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold)),
                   content:
                       Text('Voulez vous vraiment supprimer cette alerte ?'),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Non')),
+                        child: Text('Non',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold))),
                     TextButton(
-                      child: Text('Oui'),
+                      child: Text('Oui',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold)),
                       onPressed: () {
                         Navigator.pop(context);
                         deletealerte(response.id.toInt().toString());
@@ -398,5 +406,32 @@ class _AlertePageState extends State<AlertePage> {
 
   tohome(BuildContext context) {
     Navigator.pushReplacementNamed(context, HomePage.screenRoute);
+  }
+  Widget buildButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      color: Colors.bluesecondary,
+      width: double.infinity,
+      child: TextButton(
+        onPressed: () {
+          Navigator.of(context)
+              .pushNamed(AlerteAddPage.screenRoute)
+              .then(
+                (result) {
+              if (result != null) {}
+            },
+          );
+        },
+        child: Text(
+          'Ajouter une alerte',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: Colors.greysecondary,
+          ),
+        ),
+      ),
+    );
+    ;
   }
 }

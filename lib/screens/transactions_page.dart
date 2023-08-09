@@ -41,85 +41,80 @@ class _TransactionsPageState extends State<TransactionsPage> {
         centerTitle: true,
         title: Text('Mes transactions',
             style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-            )),
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.bold)),
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.blueprimary,
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    Scrollbar(
-                      child: FutureBuilder<List<TransactionsEntity>>(
-                        future: gettransactions(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, i) {
-                                return buildProduct(snapshot.data![i]);
-                              },
-                            );
-                          }
-                          return const Center(child: CircularProgressIndicator());
-                        },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+                child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Scrollbar(
+                        child: FutureBuilder<List<TransactionsEntity>>(
+                          future: gettransactions(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, i) {
+                                  return buildProduct(snapshot.data![i]);
+                                },
+                              );
+                            }
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )),
-        ],
+                    ],
+                  ),
+                ],
+              ),
+            )),
+          ],
+        ),
       ),
     );
     ;
   }
 
-  Widget buildProduct(TransactionsEntity response) => Material(
-        borderRadius: BorderRadius.circular(10),
-        elevation: 8,
-        shadowColor: Colors.grey[50],
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+  Widget buildProduct(TransactionsEntity response) => Container(
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          gradient: LinearGradient(
+              colors: [Colors.greysecondary, Colors.greyprimary],
+              begin: Alignment.topCenter),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 2, // Border width
           ),
-          child: Row(children: [
-            Expanded(
-              flex: 9,
-              child: Column(
-                children: [
-                  Text(response.sTATION),
-                  Padding(
-                    padding: EdgeInsets.all(6),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      response.p,
-                      maxLines: 2,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(6),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      response.m.toString(),
-                      maxLines: 2,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ]),
+        ),
+        child: Expanded(
+          child: Column(
+            children: [
+              buildRows("Station :", response.sTATION),
+              buildRows("Produit :", response.p),
+              buildRows("Montant :", response.m),
+              buildRows("Date :", response.dH),
+            ],
+          ),
         ),
       );
 
@@ -140,6 +135,44 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
     return (json.decode(response.body) as List)
         .map((i) => TransactionsEntity.fromJson(i))
+        .toList()
+        .reversed
         .toList();
   }
+
+  Widget buildRows(String title, String value) => Column(children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Container(
+              child: Row(
+                children: <Widget>[
+                  new Expanded(
+                    flex: 1,
+                    child: new Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blueprimary,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  new Expanded(
+                    flex: 1,
+                    child: new Text(
+                      value,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.bluesecondary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ]);
 }

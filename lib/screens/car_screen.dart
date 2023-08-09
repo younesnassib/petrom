@@ -44,84 +44,76 @@ class _CarPageState extends State<CarPage> {
           centerTitle: true,
           title: Text('Mes vehicules',
               style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              )),
+                  fontSize: 16,
+                  color: Colors.blueprimary,
+                  fontWeight: FontWeight.bold)),
           iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
+            color: Colors.blueprimary,
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-                flex: 5,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Column(
-                        children: [
-                          Scrollbar(
-                            child: FutureBuilder<List<CarResponseEntity>>(
-                              future: getcars(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: snapshot.data!.length,
-                                      itemBuilder: (context, i) {
-                                        return buildProduct(snapshot.data![i]);
-                                      });
-                                }
-                                return const Center( child: CircularProgressIndicator());
-                              },
+        body: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Column(
+                          children: [
+                            Scrollbar(
+                              child: FutureBuilder<List<CarResponseEntity>>(
+                                future: getcars(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, i) {
+                                          return buildProduct(
+                                              snapshot.data![i]);
+                                        });
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )),
-            Expanded(
-                flex: 1,
-                child: Center(
-                  child: Card(
-                    color: Colors.blue,
-                    child: TextButton(
-                      onPressed: () {
-                        getcartes(Session.infosUser.data.user.codeSap);
-                      },
-                      child: Text(
-                        'Ajouter un vehicule',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
+                          ],
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                ),)
-          ],
+                  )),
+              buildButton()
+            ],
+          ),
         ),
       ),
     );
     ;
   }
 
-  Widget buildProduct(CarResponseEntity response) => Material(
-        borderRadius: BorderRadius.circular(10),
-        elevation: 8,
-        shadowColor: Colors.grey[50],
+  Widget buildProduct(CarResponseEntity response) => Container(
+        margin: EdgeInsets.symmetric(vertical: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          gradient: LinearGradient(
+              colors: [Colors.greysecondary, Colors.greyprimary],
+              begin: Alignment.topCenter),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 2, // Border width
+          ),
+        ),
         child: InkWell(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CarDetails(cardetail: response)));
           },
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
             child: Row(children: [
               Expanded(
                 flex: 9,
@@ -136,7 +128,7 @@ class _CarPageState extends State<CarPage> {
                                 image: AssetImage('images/auto.png'),
                                 height: 50,
                                 width: 50,
-                                color: Color(0xFF42A5F5)),
+                                color: Colors.blueprimary),
                           ),
                         ),
                         Expanded(
@@ -150,9 +142,23 @@ class _CarPageState extends State<CarPage> {
                                   children: [
                                     Expanded(
                                         flex: 1,
-                                        child: Text('Nom du vehicule :')),
+                                        child: Text(
+                                          'Nom du vehicule :',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueprimary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )),
                                     Expanded(
-                                        flex: 1, child: Text(response.libelle)),
+                                        flex: 1,
+                                        child: Text(
+                                          response.libelle,
+                                          style: TextStyle(
+                                            fontSize: 14,
+
+                                          ),
+                                        )),
                                   ],
                                 ),
                                 SizedBox(height: 10),
@@ -160,12 +166,22 @@ class _CarPageState extends State<CarPage> {
                                   children: [
                                     Expanded(
                                         flex: 1,
-                                        child: Text('Type du vehicule :')),
+                                        child: Text(
+                                          'Type du vehicule :',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueprimary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )),
                                     Expanded(
                                         flex: 1,
                                         child: Text(
                                           response.motorisation,
                                           maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 14
+                                          ),
                                         )),
                                   ],
                                 ),
@@ -173,12 +189,23 @@ class _CarPageState extends State<CarPage> {
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 1, child: Text('Carburant :')),
+                                        flex: 1,
+                                        child: Text(
+                                          'Carburant :',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueprimary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )),
                                     Expanded(
                                         flex: 1,
                                         child: Text(
                                           response.carburant,
                                           maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 14
+                                          ),
                                         )),
                                   ],
                                 ),
@@ -186,12 +213,23 @@ class _CarPageState extends State<CarPage> {
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 1, child: Text('Matricule :')),
+                                        flex: 1,
+                                        child: Text(
+                                          'Matricule :',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueprimary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )),
                                     Expanded(
                                         flex: 1,
                                         child: Text(
                                           response.matricule,
                                           maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
                                         )),
                                   ],
                                 ),
@@ -208,13 +246,19 @@ class _CarPageState extends State<CarPage> {
                         )
                       ],
                     ),
-                    TextButton(
-                      onPressed: () {
-                        gettransactions(response);
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        color: Colors.blue,
+                    Container(
+                      width: double.infinity,
+                      child: TextButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.bluesecondary,
+                            shape: RoundedRectangleBorder(),
+                            side: BorderSide(
+                                width: 2.0, color: Colors.blueprimary),
+                            textStyle: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold)),
+                        onPressed: () {
+                          gettransactions(response);
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
@@ -277,16 +321,28 @@ class _CarPageState extends State<CarPage> {
             () => showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Modification du vehicule'),
+                title: Text('Modification du vehicule',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blueprimary,
+                        fontWeight: FontWeight.bold)),
                 content: Text('Voulez vous vraiment modifier ce vehicule ?'),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text('Non')),
+                      child: Text('Non',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blueprimary,
+                              fontWeight: FontWeight.bold))),
                   TextButton(
                       onPressed: () => getcartesforupdate(
                           response, Session.infosUser.data.user.codeSap),
-                      child: Text('Oui'))
+                      child: Text('Oui',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blueprimary,
+                              fontWeight: FontWeight.bold)))
                 ],
               ),
             ),
@@ -301,14 +357,26 @@ class _CarPageState extends State<CarPage> {
               () => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Suppression de vehicule'),
+                  title: Text('Suppression de vehicule',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blueprimary,
+                          fontWeight: FontWeight.bold)),
                   content: Text('Voulez vous vraiment supprimer ce vehicule ?'),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Non')),
+                        child: Text('Non',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold))),
                     TextButton(
-                      child: Text('Oui'),
+                      child: Text('Oui',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blueprimary,
+                              fontWeight: FontWeight.bold)),
                       onPressed: () {
                         Navigator.pop(context);
                         deletecar2(response.id.toInt().toString());
@@ -522,8 +590,32 @@ class _CarPageState extends State<CarPage> {
           fontSize: 16.0);
   }
 
-  tostatistiques(BuildContext context, CarResponseEntity car, List<TransactionsEntity> ARE) {
+  tostatistiques(BuildContext context, CarResponseEntity car,
+      List<TransactionsEntity> ARE) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => VehiculeStatistique(cardetail: car, transactions: ARE)));
+        builder: (context) =>
+            VehiculeStatistique(cardetail: car, transactions: ARE)));
+  }
+
+  Widget buildButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      color: Colors.bluesecondary,
+      width: double.infinity,
+      child: TextButton(
+        onPressed: () {
+          getcartes(Session.infosUser.data.user.codeSap);
+        },
+        child: Text(
+          'Ajouter un vehicule',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: Colors.greysecondary,
+          ),
+        ),
+      ),
+    );
+    ;
   }
 }

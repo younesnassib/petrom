@@ -54,78 +54,46 @@ class CarAddState extends State<CarAdd> {
         title: Text(
           'Mes vehicules',
           style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
+              fontSize: 16,
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.blueprimary, //change your color here
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    buildRows('Nom'),
-                    buildRows('Kilométrage'),
-                    buildRows('Type de carburant'),
-                    buildRows('Type de voiture'),
-                    buildRows('Marque'),
-                    buildRows('Carte'),
-                    buildRows('Capacité de réservoir'),
-                    buildRows('Matricule')
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Card(
-                color: Colors.blue,
-                child: TextButton(
-                  //   'matricule': MatriculeController.text +
-                  // '.' +
-                  // Matricule +
-                  //   '.' +
-                  //   Matricule3Controller.text,
-                  //   'marque': marque,
-                  //   'reservoir': CapacitereservoirController.text,
-                  //   'pan_carte': carte,
-                  //   'modele': carte,
-                  //   'motorisation': typevoiture,
-                  //   'carburant': typecarburant,
-                  //   'libelle': NomController.text,
-                  //   'reservoir': CapacitereservoirController.text,
-                  //   'km_courant': KilometrageController.text,
-                  onPressed: () => {
-                    if (NomController.text == '' ||
-                        CapacitereservoirController.text == '' ||
-                        KilometrageController.text == '' ||
-                        MatriculeController.text == '' ||
-                        Matricule3Controller.text == '')
-                      {Common.showToast('Veuillez remplire tous les champs ')}
-                    else
-                      addcar()
-                  },
-                  child: Text(
-                    'Ajouter un vehicule',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      buildRows('Nom'),
+                      buildRows('Kilométrage'),
+                      buildRows('Type de carburant'),
+                      buildRows('Type de voiture'),
+                      buildRows('Marque'),
+                      buildRows('Carte'),
+                      buildRows('Capacité de réservoir'),
+                      buildRows('Matricule'),
+                      AddCarButton()
+                    ],
                   ),
                 ),
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -140,9 +108,9 @@ class CarAddState extends State<CarAdd> {
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                      fontSize: 14,
+                      color: Colors.blueprimary,
+                      fontWeight: FontWeight.bold),
                   textAlign: TextAlign.right,
                 ),
               ),
@@ -155,21 +123,27 @@ class CarAddState extends State<CarAdd> {
   Widget showwidget(String title) {
     if (title == "Nom") {
       return TextField(
-        decoration: InputDecoration(border: InputBorder.none, hintText: title),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: title,
+        ),
         controller: NomController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Kilométrage") {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: KilometrageController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Type de carburant") {
       return DropdownButton<String>(
           isExpanded: true,
           value: typecarburant,
           items: getTypeCarburantsPickerItems()
-              .map((item) =>
-                  DropdownMenuItem<String>(value: item, child: Text(item)))
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: TextStyle(fontSize: 14))))
               .toList(),
           onChanged: (item) => setState(() => typecarburant = item!));
     } else if (title == "Type de voiture") {
@@ -177,8 +151,8 @@ class CarAddState extends State<CarAdd> {
         isExpanded: true,
         value: typevoiture,
         items: getTypeVoiturePickerItems()
-            .map((item) =>
-                DropdownMenuItem<String>(value: item, child: Text(item)))
+            .map((item) => DropdownMenuItem<String>(
+                value: item, child: Text(item, style: TextStyle(fontSize: 14))))
             .toList(),
         onChanged: (item) => setState(
           () => {
@@ -194,8 +168,9 @@ class CarAddState extends State<CarAdd> {
           isExpanded: true,
           value: marque,
           items: getMarquePickerItems(indextypevoiture)
-              .map((item) =>
-                  DropdownMenuItem<String>(value: item, child: Text(item)))
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: TextStyle(fontSize: 14))))
               .toList(),
           onChanged: (item) => setState(() => marque = item!));
     } else if (title == "Carte") {
@@ -203,14 +178,16 @@ class CarAddState extends State<CarAdd> {
           isExpanded: true,
           value: carte,
           items: getCartePickerItems()
-              .map((item) =>
-                  DropdownMenuItem<String>(value: item, child: Text(item)))
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: TextStyle(fontSize: 14))))
               .toList(),
           onChanged: (item) => setState(() => carte = item!));
     } else if (title == "Capacité de réservoir") {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: CapacitereservoirController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Matricule") {
       return Container(
@@ -224,6 +201,7 @@ class CarAddState extends State<CarAdd> {
               maxLength: 5,
               decoration: InputDecoration(border: InputBorder.none),
               controller: MatriculeController,
+              style: TextStyle(fontSize: 14),
             ),
           ),
           Expanded(flex: 1, child: Text(textAlign: TextAlign.center, "-")),
@@ -234,7 +212,8 @@ class CarAddState extends State<CarAdd> {
                   value: arabMatricule,
                   items: getArabMatriculePickerItems()
                       .map((item) => DropdownMenuItem<String>(
-                          value: item, child: Text(item)))
+                          value: item,
+                          child: Text(item, style: TextStyle(fontSize: 14))))
                       .toList(),
                   onChanged: (item) => setState(() => arabMatricule = item!))),
           Expanded(flex: 1, child: Text(textAlign: TextAlign.center, "-")),
@@ -246,6 +225,7 @@ class CarAddState extends State<CarAdd> {
                 maxLength: 2,
                 decoration: InputDecoration(border: InputBorder.none),
                 controller: Matricule3Controller,
+                style: TextStyle(fontSize: 14),
               )),
         ]),
       );
@@ -398,4 +378,36 @@ class CarAddState extends State<CarAdd> {
   void tocars(BuildContext context) {
     Navigator.pushReplacementNamed(context, CarPage.screenRoute);
   }
+
+  Widget AddCarButton() => Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.blueprimary,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(
+            color: Colors.greyprimary, // Border color
+            width: 2, // Border width
+          ),
+        ),
+        child: TextButton(
+          onPressed: () {
+            if (NomController.text == '' ||
+                CapacitereservoirController.text == '' ||
+                KilometrageController.text == '' ||
+                MatriculeController.text == '' ||
+                Matricule3Controller.text == '') {
+              Common.showToast('Veuillez remplire tous les champs ');
+            } else
+              addcar();
+          },
+          child: Text(
+            'Ajouter le vehicule',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.greyprimary,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
 }

@@ -47,54 +47,65 @@ class ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: Text(
-            'Nos Produits',
-            style: TextStyle(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Nos Produits',
+          style: TextStyle(
               fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold),
         ),
-        body: Column(
-          children: [
-            TabBar(
-              tabs: [
-                Tab(
-                    icon: new Image.asset('images/toutproduit.png',
-                        height: 20, width: 20, color: Colors.blue)),
-                Tab(
-                    icon: new Image.asset('images/carburant.png',
-                        height: 20, width: 20, color: Colors.blue)),
-                Tab(
-                    icon: new Image.asset('images/lubrifiant.png',
-                        height: 20, width: 20, color: Colors.blue)),
-                Tab(
-                    icon: new Image.asset('images/cards.png',
-                        height: 20, width: 20, color: Colors.blue)),
-                Tab(
-                    icon: new Image.asset('images/gas.png',
-                        height: 20, width: 20, color: Colors.blue))
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  Container(child: Center(child: getgridView(tout))),
-                  Container(child: Center(child: getgridView(carburant))),
-                  Container(child: Center(child: getgridView(lubrifiant))),
-                  Container(child: Center(child: getgridView(cards))),
-                  Container(child: Center(child: getgridView(gaz))),
+        iconTheme: IconThemeData(
+          color: Colors.blueprimary, //change your color here
+        ),
+      ),
+      body: DefaultTabController(
+        length: 5,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.white, Colors.greysecondary],
+                begin: Alignment.topCenter),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Column(
+            children: [
+              TabBar(
+                indicatorColor: Colors.blueprimary,
+                tabs: [
+                  Tab(
+                      icon: new Image.asset('images/toutproduit.png',
+                          height: 20, width: 20, color: Colors.blueprimary)),
+                  Tab(
+                      icon: new Image.asset('images/carburant.png',
+                          height: 20, width: 20, color: Colors.blueprimary)),
+                  Tab(
+                      icon: new Image.asset('images/lubrifiant.png',
+                          height: 20, width: 20, color: Colors.blueprimary)),
+                  Tab(
+                      icon: new Image.asset('images/cards.png',
+                          height: 20, width: 20, color: Colors.blueprimary)),
+                  Tab(
+                      icon: new Image.asset('images/gas.png',
+                          height: 20, width: 20, color: Colors.blueprimary))
                 ],
               ),
-            )
-          ],
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    Container(child: Center(child: getgridView(tout))),
+                    Container(child: Center(child: getgridView(carburant))),
+                    Container(child: Center(child: getgridView(lubrifiant))),
+                    Container(child: Center(child: getgridView(cards))),
+                    Container(child: Center(child: getgridView(gaz))),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -129,12 +140,7 @@ class ProductScreenState extends State<ProductScreen> {
   }
 
   Widget buildProduct(Product product) => Container(
-        margin: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        width: 180,
-        height: 150,
+        margin: EdgeInsets.only(left: 5,right: 5,top: 10,bottom: 10),
         child: InkWell(
           onTap: () {
             if (product is Lubrifiant) {
@@ -145,9 +151,10 @@ class ProductScreenState extends State<ProductScreen> {
                   builder: (context) => ProductDetail(product: product)));
           },
           child: Material(
-            borderRadius: BorderRadius.circular(10),
-            elevation: 5,
-            shadowColor: Colors.grey[50],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            elevation: 3,
+            shadowColor: Colors.bluesecondary,
             child: Column(
               children: [
                 Expanded(
@@ -157,21 +164,29 @@ class ProductScreenState extends State<ProductScreen> {
                     width: 50,
                   ),
                 ),
-                Expanded(
+                Container(
+                  margin: EdgeInsets.all( 5),
                   child: Column(
-                    children: [
-                      Text(product.title),
-                      Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Text(
+                      children: [
+                        Text(product.title,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold)),
+                        Text(
                           textAlign: TextAlign.center,
                           product.description,
                           maxLines: 2,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.bluesecondary
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ),
+
               ],
             ),
           ),

@@ -63,13 +63,20 @@ class StationDetailsState extends State<StationDetails> {
           Expanded(
             flex: 1,
             child: Container(
+              margin: EdgeInsets.only(bottom: 5),
               color: Colors.white,
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
               child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue, // Background Color
-                  ),
+                style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    backgroundColor: Colors.blueprimary,
+                    textStyle: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold) // Background Color
+                    ),
                 onPressed: () => showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -92,20 +99,28 @@ class StationDetailsState extends State<StationDetails> {
 
   Widget buildRows(String title, String value) => Column(children: [
         Container(
-          color: Colors.white,
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.greyprimary,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            border: Border.all(
+              color: Colors.bluesecondary, // Border color
+              width: 1, // Border width
+            ),
+          ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 15),
+            padding: EdgeInsets.all(5),
             child: Container(
               child: Row(
                 children: <Widget>[
                   new Expanded(
                     flex: 1,
                     child: new Text(
-                      title,
+                      title + " :",
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
+                          fontSize: 14,
+                          color: Colors.blueprimary,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   new Expanded(
@@ -113,7 +128,7 @@ class StationDetailsState extends State<StationDetails> {
                     child: new Text(
                       value,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 12,
                         color: Colors.black,
                       ),
                       textAlign: TextAlign.center,
@@ -124,11 +139,6 @@ class StationDetailsState extends State<StationDetails> {
             ),
           ),
         ),
-        Container(
-          width: double.infinity,
-          color: Colors.grey,
-          height: 1,
-        )
       ]);
 
   @override
@@ -163,20 +173,28 @@ class StationDetailsState extends State<StationDetails> {
 
   Widget buildRowsIcon(String title, String value) => Column(children: [
         Container(
-          color: Colors.white,
+          margin: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            border: Border.all(
+              color: Colors.bluesecondary, // Border color
+              width: 1, // Border width
+            ),
+          ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 15),
+            padding: EdgeInsets.all(5),
             child: Container(
               child: Row(
                 children: <Widget>[
                   new Expanded(
                     flex: 1,
                     child: new Text(
-                      title,
+                      title + " :",
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
+                          fontSize: 14,
+                          color: Colors.blueprimary,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   new Expanded(
@@ -188,25 +206,22 @@ class StationDetailsState extends State<StationDetails> {
             ),
           ),
         ),
-        Container(
-          width: double.infinity,
-          color: Colors.grey,
-          height: 1,
-        )
       ]);
 
   getImage(String value) {
     if (value == '1') {
       return Image(
-        image: AssetImage('images/greenCheck.png'),
+        image: AssetImage('images/check.png'),
         height: 20,
         width: 20,
+        color: Colors.blueprimary,
       );
     } else
       return Image(
-        image: AssetImage('images/redChek.png'),
-        height: 20,
-        width: 20,
+        image: AssetImage('images/x.png'),
+        height: 10,
+        width: 15,
+        color: Colors.greyprimary,
       );
   }
 
@@ -215,39 +230,66 @@ class StationDetailsState extends State<StationDetails> {
           children: [
             Text(widget.stationRecup.nom,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+                    fontSize: 16,
+                    color: Colors.blueprimary,
+                    fontWeight: FontWeight.bold)),
+            Text(widget.stationRecup.adresse,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blueprimary,
                 )),
+            SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
-                    child: Container(
-                  child: TextButton(
-                      onPressed: () {
-                        launchWaze(double.parse(widget.stationRecup.latitude),
-                            double.parse(widget.stationRecup.longitude));
-                      },
-                      child: Center(
-                          child: Text('WAZE',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              )))),
-                )),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    child: TextButton(
+                        onPressed: () {
+                          launchWaze(double.parse(widget.stationRecup.latitude),
+                              double.parse(widget.stationRecup.longitude));
+                        },
+                        style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            backgroundColor: Colors.blueprimary,
+                            textStyle: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold) // Background Color
+                            ),
+                        child: Center(
+                            child: Text('WAZE',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.greyprimary,
+                                )))),
+                  ),
+                ),
                 Expanded(
                     child: Container(
-                  child: TextButton(
-                      onPressed: () {
-                        navigateTo(double.parse(widget.stationRecup.latitude),
-                            double.parse(widget.stationRecup.longitude));
-                      },
-                      child: Center(
-                          child: Text('GOOGLE MAP',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              )))),
-                ))
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                        child: TextButton(
+                            onPressed: () {
+                              navigateTo(
+                                  double.parse(widget.stationRecup.latitude),
+                                  double.parse(widget.stationRecup.longitude));
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.greysecondary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                                side: BorderSide(
+                                    width: 2.0, color: Colors.blueprimary),
+                                textStyle: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold)),
+                            child: Center(
+                                child: Text('GOOGLE MAP',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    )))))),
               ],
             )
           ],

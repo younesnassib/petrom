@@ -22,6 +22,8 @@ class CarteResponseEntity {
 	late String listeproduit;
 	@JSONField(name: "Idclient")
 	late String idclient;
+	@JSONField(name: "Restrictiongeo")
+	late String restrictiongeo;
 	@JSONField(name: "VHS")
 	late String vHS;
   

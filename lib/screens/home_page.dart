@@ -39,19 +39,19 @@ class _HomePageState extends State<HomePage> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: const Text('Deconnexion'),
-                content: const Text('Voulez-vous vou deconnectez ?'),
+                title: const Text('Deconnexion',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blueprimary)),
+                content: const Text('Voulez-vous vous deconnectez ?'),
                 actions: [
-                  ElevatedButton(
+                  TextButton(
                       onPressed: () {
                         Navigator.of(context).pop(false);
                       },
-                      child: const Text('Non')),
-                  ElevatedButton(
+                      child: const Text('Non',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blueprimary))),
+                  TextButton(
                       onPressed: () {
                         Navigator.of(context).pop(true);
                       },
-                      child: const Text('Oui')),
+                      child: const Text('Oui',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blueprimary))),
                 ],
               );
             });
@@ -60,48 +60,69 @@ class _HomePageState extends State<HomePage> {
         } else
           return Future.value(false);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          centerTitle: true,
-          title: Text('Bienvenue'),
-        ),
-        backgroundColor: Colors.white,
-        body: IndexedStack(
-          children: tabs,
-          index: _currentindex,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentindex,
-          items: [
-            BottomNavigationBarItem(
-                icon: new Image.asset('images/accueil.png',
-                    height: 20, width: 20, color: Colors.grey[500]),
-                backgroundColor: Colors.grey[100],
-                label: 'Acceuil'),
-            BottomNavigationBarItem(
-                icon: new Image.asset('images/cartebancaire2.png',
-                    height: 20, width: 20, color: Colors.grey[500]),
-                backgroundColor: Colors.grey[100],
-                label: 'Carte'),
-            BottomNavigationBarItem(
-                icon: new Image.asset('images/naviguer.png',
-                    height: 20, width: 20, color: Colors.grey[500]),
-                backgroundColor: Colors.grey[100],
-                label: 'Naviguer'),
-            BottomNavigationBarItem(
-                icon: new Image.asset('images/utilisateurdeprofil.png',
-                    height: 20, width: 20, color: Colors.grey[500]),
-                backgroundColor: Colors.grey[100],
-                label: 'Profil'),
-          ],
-          selectedLabelStyle: TextStyle(fontSize: 22, color: Colors.black),
-          fixedColor: Colors.grey[500],
-          onTap: (index) {
-            setState(() {
-              _currentindex = index;
-            });
-          },
+      child: Container(
+        color: Colors.blueprimary,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: Text('Bienvenue',style: TextStyle(
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold
+            ),),
+            iconTheme: IconThemeData(
+              color: Colors.blueprimary, //change your color here
+            ),
+          ),
+          body: IndexedStack(
+            children: tabs,
+            index: _currentindex,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+
+            unselectedItemColor: Colors.green,
+            selectedItemColor: Colors.blueprimary,
+            currentIndex: _currentindex,
+            items: [
+              BottomNavigationBarItem(
+                  backgroundColor: Colors.white,
+                  icon: new Image.asset('images/accueil.png',
+                      height: 20, width: 20, color: Colors.grey[500]),
+                  activeIcon: new Image.asset('images/accueil.png',
+                      height: 20, width: 20, color: Colors.blueprimary),
+                  label: 'Acceuil' ),
+              BottomNavigationBarItem(
+
+                  backgroundColor: Colors.white,
+                  icon: new Image.asset('images/cartebancaire2.png',
+                      height: 20, width: 20, color: Colors.grey[500]),
+                  activeIcon: new Image.asset('images/cartebancaire2.png',
+                      height: 20, width: 20, color: Colors.blueprimary),
+                  label: 'Carte'),
+              BottomNavigationBarItem(
+
+                  backgroundColor: Colors.white,
+                  icon: new Image.asset('images/naviguer.png',
+                      height: 20, width: 20, color: Colors.grey[500]),
+                  activeIcon: new Image.asset('images/naviguer.png',
+                      height: 20, width: 20, color: Colors.blueprimary),
+                  label: 'Naviguer'),
+              BottomNavigationBarItem(
+
+                  backgroundColor: Colors.white,
+                  icon: new Image.asset('images/utilisateurdeprofil.png',
+                      height: 20, width: 20, color: Colors.grey[500]),
+                  activeIcon: new Image.asset('images/utilisateurdeprofil.png',
+                      height: 20, width: 20, color: Colors.blueprimary),
+                  label: 'Profil'),
+            ],
+            selectedLabelStyle: TextStyle(fontSize: 16, color: Colors.blueprimary ,fontWeight: FontWeight.bold),
+            onTap: (index) {
+              setState(() {
+                _currentindex = index;
+              });
+            },
+          ),
         ),
       ),
     );

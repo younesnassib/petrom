@@ -41,43 +41,47 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
           'STATISTIQUES',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black,
+            color: Colors.blueprimary,
+            fontWeight: FontWeight.bold
           ),
         ),
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildProduct(widget.cardetail),
-            BuildTitle("INFORMATIONS GENERALES"),
-            buildGeneralInfos(),
-            BuildTitle("TOTAL DES TRANSACTIONS PAR MOIS"),
-            BuildTitleSecond("Selectionnez une année"),
-            buildPickerYear(),
-            BuildMonthTotal("Mois"),
-            BuildMonthDetail(1),
-            BuildMonthDetail(2),
-            BuildMonthDetail(3),
-            BuildMonthDetail(4),
-            BuildMonthDetail(5),
-            BuildMonthDetail(6),
-            BuildMonthDetail(7),
-            BuildMonthDetail(8),
-            BuildMonthDetail(9),
-            BuildMonthDetail(10),
-            BuildMonthDetail(11),
-            BuildMonthDetail(12),
-            BuildTitle("TOTAL DES TRANSACTIONS PAR ANNEE"),
-            getMonthComponent(
-                "MONTANT MOYEN", getMontantMoyen(transactions) + " dhs"),
-            getMonthComponent(
-                "MONTANT MAX", getMontantMax(transactions) + " dhs"),
-            getMonthComponent(
-                "MONTANT MIN", getMontantMin(transactions) + " dhs")
-          ],
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildProduct(widget.cardetail),
+              BuildTitle("INFORMATIONS GENERALES"),
+              buildGeneralInfos(),
+              BuildTitle("TOTAL DES TRANSACTIONS PAR MOIS"),
+              BuildTitleSecond("Selectionnez une année"),
+              buildPickerYear(),
+              BuildMonthTotal("Total "),
+              BuildMonthDetail(1),
+              BuildMonthDetail(2),
+              BuildMonthDetail(3),
+              BuildMonthDetail(4),
+              BuildMonthDetail(5),
+              BuildMonthDetail(6),
+              BuildMonthDetail(7),
+              BuildMonthDetail(8),
+              BuildMonthDetail(9),
+              BuildMonthDetail(10),
+              BuildMonthDetail(11),
+              BuildMonthDetail(12),
+              BuildTitle("TOTAL DES TRANSACTIONS PAR ANNEE"),
+              getMonthComponent(
+                  "MONTANT MOYEN", getMontantMoyen(transactions) + " Dhs"),
+              getMonthComponent(
+                  "MONTANT MAX", getMontantMax(transactions) + " Dhs"),
+              getMonthComponent(
+                  "MONTANT MIN", getMontantMin(transactions) + " Dhs")
+            ],
+          ),
         ),
       ),
     );
@@ -85,19 +89,27 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
 
   Widget BuildTitle(String title) {
     return Padding(
-        padding: EdgeInsets.all(10),
-        child: Container(
-            child: Text(title,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold))));
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Container(
+          child: Text(title,
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blueprimary,
+                  fontWeight: FontWeight.bold))),
+    );
   }
 
-  Widget buildProduct(CarResponseEntity response) => Material(
-        borderRadius: BorderRadius.circular(10),
-        elevation: 8,
-        shadowColor: Colors.grey[50],
+  Widget buildProduct(CarResponseEntity response) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          gradient: LinearGradient(
+              colors: [Colors.greysecondary, Colors.greyprimary],
+              begin: Alignment.topCenter),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 2, // Border width
+          ),
+        ),
         child: InkWell(
           child: Container(
             decoration: BoxDecoration(
@@ -115,7 +127,7 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                             image: AssetImage('images/auto.png'),
                             height: 50,
                             width: 50,
-                            color: Color(0xFF42A5F5)),
+                            color: Colors.bluesecondary),
                       ),
                     ),
                     Expanded(
@@ -128,7 +140,7 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 1, child: Text('Nom du vehicule :')),
+                                    flex: 1, child: Text('Nom du vehicule :',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold))),
                                 Expanded(
                                     flex: 1, child: Text(response.libelle)),
                               ],
@@ -137,7 +149,7 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 1, child: Text('Type du vehicule :')),
+                                    flex: 1, child: Text('Type du vehicule :',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold))),
                                 Expanded(
                                     flex: 1,
                                     child: Text(
@@ -149,7 +161,7 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                             SizedBox(height: 10),
                             Row(
                               children: [
-                                Expanded(flex: 1, child: Text('Carburant :')),
+                                Expanded(flex: 1, child: Text('Carburant :',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold))),
                                 Expanded(
                                   flex: 1,
                                   child: Text(
@@ -162,7 +174,7 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                             SizedBox(height: 10),
                             Row(
                               children: [
-                                Expanded(flex: 1, child: Text('Matricule :')),
+                                Expanded(flex: 1, child: Text('Matricule :',style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold))),
                                 Expanded(
                                     flex: 1,
                                     child: Text(
@@ -206,16 +218,13 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
                 flex: 1,
                 child: Container(
                     margin: EdgeInsets.all(5),
-                    child: buildGeneralComponent(3))),
+                    child: buildGeneralComponent(4))),
             Expanded(
                 flex: 1,
                 child: Container(
-                    margin: EdgeInsets.all(5), child: buildGeneralComponent(4)))
+                    margin: EdgeInsets.all(5), child: buildGeneralComponent(5)))
           ],
         ),
-        Container(
-            child: Container(
-                margin: EdgeInsets.all(5), child: buildGeneralComponent(5)))
       ],
     );
   }
@@ -225,12 +234,13 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
       return buildDetailComponent(
           "Station Frequentée", statistique.stationfrequente);
     } else if (i == 2) {
-      return buildDetailComponent("Montant Total", statistique.montanttotal);
+      return buildDetailComponent(
+          "Montant Total", statistique.montanttotal + " Dhs");
     } else if (i == 3) {
       return buildDetailComponent("Kilométrage", "Kilométrage");
     } else if (i == 4) {
       return buildDetailComponent(
-          "Carburant Total", statistique.carburanttotal);
+          "Carburant Total", statistique.carburanttotal + " L");
     } else if (i == 5) {
       return buildDetailComponent(
           "NBR Transactions", statistique.nbrtransactions);
@@ -240,20 +250,29 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
   }
 
   Widget buildDetailComponent(String title, String Value) {
-    return Material(
-        borderRadius: BorderRadius.circular(10),
-        elevation: 8,
-        shadowColor: Colors.grey[50],
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greyprimary],
+              begin: Alignment.topCenter),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 2, // Border width
+          ),
+        ),
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
-            children: [Text(title), SizedBox(height: 5), Text(Value)],
+            children: [Text(title,style: TextStyle(color:Colors.blueprimary,fontWeight: FontWeight.bold)), SizedBox(height: 5), Text(Value)],
           ),
         ));
   }
 
   Widget BuildTitleSecond(String title) {
-    return Container(child: Text(title));
+    return Container(
+        child: Text(title,
+            style: TextStyle(fontSize: 14, color: Colors.bluesecondary)));
   }
 
   Widget buildPickerYear() {
@@ -286,14 +305,28 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
 
   Widget BuildMonthTotal(String title) {
     return Container(
-        margin: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          gradient: LinearGradient(
+              colors: [Colors.greysecondary, Colors.greyprimary],
+              begin: Alignment.topCenter),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 2, // Border width
+          ),
+        ),
         child: Padding(
             padding: EdgeInsets.all(5),
             child: Row(
               children: [
-                Text(title),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blueprimary),
+                ),
                 Spacer(),
-                Text(statistique.montanttotal),
+                Text(statistique.montanttotal + " Dhs",
+                    style: TextStyle(color: Colors.bluesecondary)),
               ],
             )));
   }
@@ -302,51 +335,51 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
   Widget BuildMonthDetail(int Month) {
     if (Month == 1) {
       return getMonthComponent("janvier",
-          ((statistique.janvier * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.janvier * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 2) {
       return getMonthComponent("février",
-          ((statistique.fevrier * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.fevrier * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 3) {
       return getMonthComponent(
-          "mars", ((statistique.mars * 100).toInt() / 100).toString() + " dhs");
+          "mars", ((statistique.mars * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 4) {
       return getMonthComponent("avril",
-          ((statistique.avril * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.avril * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 5) {
       return getMonthComponent(
-          "mai", ((statistique.mai * 100).toInt() / 100).toString() + " dhs");
+          "mai", ((statistique.mai * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 6) {
       return getMonthComponent(
-          "juin", ((statistique.juin * 100).toInt() / 100).toString() + " dhs");
+          "juin", ((statistique.juin * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 7) {
       return getMonthComponent("juillet",
-          ((statistique.juillet * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.juillet * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 8) {
       return getMonthComponent(
-          "août", ((statistique.aout * 100).toInt() / 100).toString() + " dhs");
+          "août", ((statistique.aout * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 9) {
       return getMonthComponent("septembre",
-          ((statistique.septembre * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.septembre * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 10) {
       return getMonthComponent("octobre",
-          ((statistique.octobre * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.octobre * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 11) {
       return getMonthComponent("novembre",
-          ((statistique.novembre * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.novembre * 100).toInt() / 100).toString() + " Dhs");
     }
     if (Month == 12) {
       return getMonthComponent("décembre",
-          ((statistique.decembre * 100).toInt() / 100).toString() + " dhs");
+          ((statistique.decembre * 100).toInt() / 100).toString() + " Dhs");
     } else
       return Container();
   }
@@ -381,25 +414,33 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
 
   Widget getMonthComponent(String month, String Value) {
     return Container(
-      margin: EdgeInsets.all(5),
-      child: Material(
-        borderRadius: BorderRadius.circular(10),
-        elevation: 2,
-        shadowColor: Colors.grey[50],
-        child: Padding(
-          padding: EdgeInsets.all(5),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        gradient: LinearGradient(
+            colors: [Colors.greysecondary, Colors.greyprimary],
+            begin: Alignment.topCenter),
+
+      ),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(5),
+            child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(month),
-                    Spacer(),
-                    Align(alignment: Alignment.centerRight, child: Text(Value)),
-                  ],
-                )
-              ]),
-        ),
+                    Row(
+                      children: [
+                        Text(month,style: TextStyle(color: Colors.black)),
+                        Spacer(),
+                        Align(
+                            alignment: Alignment.centerRight, child: Text(Value,style: TextStyle(color: Colors.blueprimary),)),
+                      ],
+                    )
+                  ]),
+
+          ),
+        ],
       ),
     );
   }
@@ -424,13 +465,18 @@ class VehiculeStatistiqueState extends State<VehiculeStatistique> {
   }
 
   String getStationFrequentee(List<TransactionsEntity> mTransactions) {
+    List<TransactionsEntity> transactions = [];
+    for (TransactionsEntity T in mTransactions) {
+      if (T.q != "0") {
+        transactions.add(T);
+      }
+    }
     int max = 0;
     int curr = 0;
     String currKey = "";
-    Set<String> unique = Set<String>.from(getStationsNames(mTransactions));
+    Set<String> unique = Set<String>.from(getStationsNames(transactions));
     for (String key in unique) {
-      curr =
-          getStationsNames(mTransactions).where((name) => name == key).length;
+      curr = getStationsNames(transactions).where((name) => name == key).length;
       if (max < curr) {
         max = curr;
         currKey = key;

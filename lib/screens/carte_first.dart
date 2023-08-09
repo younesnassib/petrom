@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:petrom_fidelite/models/carte_response_entity.dart';
+import 'package:petrom_fidelite/screens/carte_details.dart';
 import 'package:petrom_fidelite/screens/cartescreen.dart';
 
 import '../models/cartehome.dart';
@@ -26,59 +27,66 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
   late DateTime datedebut;
   late String cartesstring;
   bool isChecked = false;
-
   late DateTime datefin;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        Scrollbar(
-                          child: FutureBuilder<List<CarteResponseEntity>>(
-                            future:
-                                getcartes(Session.infosUser.data.user.codeSap),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                listcards = snapshot.data!;
-                                return Column(
-                                  children: [
-                                    getTitle(),
-                                    ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: snapshot.data!.length,
-                                      itemBuilder: (context, i) {
-                                        return Column(
-                                          children: [
-                                            buildProduct(listcards![i])
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              }
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            },
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.white, Colors.greysecondary],
+                begin: Alignment.topCenter),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Column(
+                        children: [
+                          Scrollbar(
+                            child: FutureBuilder<List<CarteResponseEntity>>(
+                              future: getcartes(
+                                  Session.infosUser.data.user.codeSap),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  listcards = snapshot.data!;
+                                  return Column(
+                                    children: [
+                                      getTitle(),
+                                      ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, i) {
+                                          return Column(
+                                            children: [
+                                              buildProduct(listcards![i])
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -128,47 +136,6 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
         ),
       );
 
-  Widget buildRows(String title, String quantite, String montant) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: Row(
-          children: <Widget>[
-            new Expanded(
-              flex: 1,
-              child: new Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            new Expanded(
-              flex: 1,
-              child: new Text(
-                quantite,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            new Expanded(
-              flex: 1,
-              child: new Text(
-                montant,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-
   Future<List<CarteResponseEntity>> getcartes(String CODESAP) async {
     final response = await http.post(
       Uri.parse(Session.url + 'cards'),
@@ -191,134 +158,78 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
   }
 
   Widget buildProduct(CarteResponseEntity response) => Container(
-        color: Colors.grey[50],
+        decoration: BoxDecoration(
+          color: Colors.greyprimary,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            color: Colors.bluesecondary, // Border color
+            width: 1, // Border width
+          ),
+        ),
         margin: EdgeInsets.all(10),
         child: Padding(
-          padding: EdgeInsets.only(left: 5, top: 5, bottom: 5),
+          padding: EdgeInsets.all(10),
           child: Row(children: [
+            Expanded(flex: 1, child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle, // Set shape to circular
+                ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Image.asset('images/cards.png',
+                    height: 20, width: 20, color: Colors.blueprimary),
+              ),
+            )),
             Expanded(
               flex: 4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Column(
+              child: Container(
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              'PAN :',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              response.pAN,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          'PAN :',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Nom :',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
-                                response.nomsurlacarte,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          response.pAN,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blueprimary,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Plafond Journalier :',
-                        //       style: TextStyle(
-                        //         fontSize: 14,
-                        //         color: Colors.black,
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //     Align(
-                        //       alignment: Alignment.centerLeft,
-                        //       child: Text(
-                        //         style: TextStyle(
-                        //           fontSize: 18,
-                        //           color: Colors.black,
-                        //         ),
-                        //         response.plafondJ,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Plafonds Hebdomadaire :',
-                        //       style: TextStyle(
-                        //         fontSize: 14,
-                        //         color: Colors.black,
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //     Align(
-                        //       alignment: Alignment.centerLeft,
-                        //       child: Text(
-                        //         style: TextStyle(
-                        //           fontSize: 18,
-                        //           color: Colors.black,
-                        //         ),
-                        //         response.plafondH,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       'Plafonds Mensuelle :',
-                        //       style: TextStyle(
-                        //         fontSize: 14,
-                        //         color: Colors.black,
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //     Align(
-                        //       alignment: Alignment.centerLeft,
-                        //       child: Text(
-                        //         style: TextStyle(
-                        //           fontSize: 18,
-                        //           color: Colors.black,
-                        //         ),
-                        //         response.plafondM,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
-                  ),
-                ],
+                    Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Nom :',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blueprimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                          response.nomsurlacarte,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             // buildCheckRow(response)
@@ -326,26 +237,17 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
               flex: 1,
               child: InkWell(
                 onTap: () {
-                  String cardtopass = response.pAN
-                      .substring(response.pAN.length - 5, response.pAN.length);
-                  Navigator.of(context)
-                      .pushNamed(CarteScreen.screenRoute, arguments: {
-                    "CARDS": cardtopass,
-                    'dd':
-                        '${datedebut.year}${getmonth(datedebut.month)}${datedebut.day}',
-                    "df":
-                        '${datefin.year}${getmonth(datefin.month)}${datefin.day}'
-                  }).then(
-                    (result) {
-                      if (result != null) {}
-                    },
-                  );
+
+                  toDetails(response);
                 },
-                child: Image(
-                  image: AssetImage('images/arrowright.png'),
-                  color: Colors.blue,
-                  height: 20,
-                  width: 20,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Image(
+                    image: AssetImage('images/arrowright.png'),
+                    color: Colors.blueprimary,
+                    height: 20,
+                    width: 20,
+                  ),
                 ),
               ),
             )
@@ -517,8 +419,8 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
           textAlign: TextAlign.left,
           'Mes Cartes',
           style: TextStyle(
-            fontSize: 14,
-            color: Colors.blue,
+            fontSize: 16,
+            color: Colors.blueprimary,
             fontWeight: FontWeight.bold,
           ),
           maxLines: 4,
@@ -533,5 +435,10 @@ class _CarteFirstScreenState extends State<CarteFirsrScreen> {
       lengh = '0' + lengh;
     }
     return lengh;
+  }
+
+  void toDetails(CarteResponseEntity response) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => CarteDetails(cardetail: response)));
   }
 }

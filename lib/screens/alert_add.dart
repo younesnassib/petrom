@@ -60,83 +60,46 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         title: Text(
           'Mes Alertes',
           style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
+              fontSize: 16,
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.blueprimary, //change your color here
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 9,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  buildRows('Type alerte'),
-                  buildRows('Matricule'),
-                  buildCheckRow(),
-                  buildAlerteWidget()
-                ]),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Card(
-                color: Colors.blue,
-                child: TextButton(
-                  onPressed: () => {
-                    if (isChecked == true)
-                      {
-                        if (date.isAfter(DateTime.now()))
-                          {addalerte()}
-                        else
-                          {
-                            Fluttertoast.showToast(
-                                msg:
-                                    'La date que vous avez choisi n est pas valide',
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.grey[200],
-                                textColor: Colors.black,
-                                fontSize: 16.0)
-                          }
-                      }
-                    else
-                      {
-                        addalerte()
-                        // Fluttertoast.showToast(
-                        //     msg:
-                        //         'La date que vous avez choisi n est pas valide',
-                        //     toastLength: Toast.LENGTH_SHORT,
-                        //     gravity: ToastGravity.BOTTOM,
-                        //     backgroundColor: Colors.grey[200],
-                        //     textColor: Colors.black,
-                        //     fontSize: 16.0)
-                      }
-                  },
-                  child: const Text(
-                    'Ajouter une alerte',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    buildRows('Type alerte'),
+                    buildRows('Matricule'),
+                    buildCheckRow(),
+                    buildAlerteWidget()
+                  ]),
                 ),
               ),
             ),
-          )
-        ],
+            AddAlerteButton()
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildRows(String title) => Container(
+  Widget buildRows(String title) =>
+      Container(
         child: Column(
           children: <Widget>[
             Align(
@@ -146,10 +109,9 @@ class AlerteAddPageState extends State<AlerteAddPage> {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.right,
+                      fontSize: 14,
+                      color: Colors.blueprimary,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -163,6 +125,7 @@ class AlerteAddPageState extends State<AlerteAddPage> {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: NomController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Type alerte") {
       return DropdownButton<String>(
@@ -170,13 +133,16 @@ class AlerteAddPageState extends State<AlerteAddPage> {
           value: typealerte,
           items: getTypeAlertesPickerItems()
               .map((item) =>
-                  DropdownMenuItem<String>(value: item, child: Text(item)))
+              DropdownMenuItem<String>(value: item,
+                  child: Text(item, style: TextStyle(fontSize: 14))))
               .toList(),
           onChanged: (item) => setState(() => typealerte = item!));
     } else if (title == "A partir du Km") {
       return TextField(
-        decoration: InputDecoration(border: InputBorder.none, hintText: title),
+        decoration: InputDecoration(
+            border: InputBorder.none, hintText: title),
         controller: apartirController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Déclencher le") {
       return CupertinoButton(
@@ -185,17 +151,18 @@ class AlerteAddPageState extends State<AlerteAddPage> {
             child: Text(
               '${date.day}-${date.month}-${date.year}',
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 color: Colors.black,
               ),
             )),
         onPressed: () {
           showCupertinoModalPopup(
             context: context,
-            builder: (BuildContext context) => SizedBox(
-              height: 250,
-              child: DatePicker(),
-            ),
+            builder: (BuildContext context) =>
+                SizedBox(
+                  height: 250,
+                  child: DatePicker(),
+                ),
           );
         },
       );
@@ -203,11 +170,13 @@ class AlerteAddPageState extends State<AlerteAddPage> {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: chaqueController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Capacité de réservoir") {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: CapacitereservoirController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Matricule") {
       return Container(
@@ -230,7 +199,8 @@ class AlerteAddPageState extends State<AlerteAddPage> {
                   isExpanded: true,
                   value: arabMatricule,
                   items: getArabMatriculePickerItems()
-                      .map((item) => DropdownMenuItem<String>(
+                      .map((item) =>
+                      DropdownMenuItem<String>(
                           value: item, child: Text(item)))
                       .toList(),
                   onChanged: (item) => setState(() => arabMatricule = item!))),
@@ -277,7 +247,7 @@ class AlerteAddPageState extends State<AlerteAddPage> {
   List<String> getMarquePickerItems(int type) {
     List<String> itemsCurrency = [];
     for (var currency
-        in Session.informations.response.marquevehicules[type].marque) {
+    in Session.informations.response.marquevehicules[type].marque) {
       itemsCurrency.add(currency);
     }
     return itemsCurrency;
@@ -331,7 +301,9 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         typefrequencetemps = '1';
 
       String month = '';
-      if (date.month.toString().length == 1) {
+      if (date.month
+          .toString()
+          .length == 1) {
         month = "0" + date.month.toString();
       } else
         month = date.month.toString();
@@ -392,7 +364,7 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         'type': type,
       };
       var request =
-          http.MultipartRequest('POST', Uri.parse(Session.url + 'alerts'));
+      http.MultipartRequest('POST', Uri.parse(Session.url + 'alerts'));
       request.fields.addAll(qParams);
       request.headers.addAll(headers);
 
@@ -416,18 +388,23 @@ class AlerteAddPageState extends State<AlerteAddPage> {
     Navigator.pushReplacementNamed(context, AlertePage.screenRoute);
   }
 
-  Widget buildCheckRow() => Container(
+  Widget buildCheckRow() =>
+      Container(
+        width: double.infinity,
         child: Row(
           children: <Widget>[
-            Checkbox(
-              checkColor: Colors.white,
-              activeColor: Colors.blue,
-              value: isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value!;
-                });
-              },
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Checkbox(
+                checkColor: Colors.white,
+                activeColor: Colors.blueprimary,
+                value: isChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    isChecked = value!;
+                  });
+                },
+              ),
             ),
             Text(
               'Frequence par date',
@@ -440,7 +417,8 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         ),
       );
 
-  Widget buildeDeclencherChaque(String title) => Container(
+  Widget buildeDeclencherChaque(String title) =>
+      Container(
         child: Column(
           children: <Widget>[
             Align(
@@ -448,9 +426,9 @@ class AlerteAddPageState extends State<AlerteAddPage> {
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
+                    fontSize: 14,
+                    color: Colors.blueprimary,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             Row(
@@ -466,7 +444,8 @@ class AlerteAddPageState extends State<AlerteAddPage> {
                   child: DropdownButton<String>(
                       value: declencher,
                       items: getDeclencherChaque()
-                          .map((item) => DropdownMenuItem<String>(
+                          .map((item) =>
+                          DropdownMenuItem<String>(
                               value: item, child: Text(item)))
                           .toList(),
                       onChanged: (item) => setState(() => declencher = item!)),
@@ -477,7 +456,8 @@ class AlerteAddPageState extends State<AlerteAddPage> {
         ),
       );
 
-  Widget DatePicker() => SizedBox(
+  Widget DatePicker() =>
+      SizedBox(
         height: 250,
         child: CupertinoDatePicker(
           backgroundColor: Colors.white,
@@ -509,4 +489,55 @@ class AlerteAddPageState extends State<AlerteAddPage> {
   List<String> getArabMatriculePickerItems() {
     return ["أ", "ب", "د", "ه", "و", "ط", "ي"];
   }
+
+  Widget AddAlerteButton() =>
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.blueprimary,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(
+            color: Colors.greyprimary, // Border color
+            width: 2, // Border width
+          ),
+        ),
+        child: TextButton(
+          onPressed: () {
+            if (isChecked == true) {
+              if (date.isAfter(DateTime.now())) {
+                addalerte();
+              }
+              else {
+                Fluttertoast.showToast(
+                    msg:
+                    'La date que vous avez choisi n est pas valide',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.grey[200],
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+              }
+            }
+            else {
+              addalerte();
+              // Fluttertoast.showToast(
+              //     msg:
+              //         'La date que vous avez choisi n est pas valide',
+              //     toastLength: Toast.LENGTH_SHORT,
+              //     gravity: ToastGravity.BOTTOM,
+              //     backgroundColor: Colors.grey[200],
+              //     textColor: Colors.black,
+              //     fontSize: 16.0)
+            }
+          },
+          child: Text(
+            'Ajouter l''alerte',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.greyprimary,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
 }

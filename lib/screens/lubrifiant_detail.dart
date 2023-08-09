@@ -29,73 +29,82 @@ class LubrifiantDetailState extends State<LubrifiantDetail> {
         title: Text(widget.lubrifiant.title,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.black,
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold
             )),
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.blueprimary, //change your color here
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              height: 300,
-              child: Center(
-                child: Image(
-                  image: AssetImage(widget.lubrifiant.image),
-                  height: 100,
-                  width: 200,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: 300,
+                child: Center(
+                  child: Image(
+                    image: AssetImage(widget.lubrifiant.image),
+                    height: 100,
+                    width: 200,
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(children: [
-                Expanded(
-                  flex: 8,
-                  child: SingleChildScrollView(
-                      child: Column(children: [
-                    Text(widget.lubrifiant.description,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        )),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Text('Avantages :',
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(children: [
+                  Expanded(
+                    flex: 8,
+                    child: SingleChildScrollView(
+                        child: Column(children: [
+                      Text(widget.lubrifiant.description,
                           style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    Text(widget.lubrifiant.avantages,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        )),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Text('Applications :',
+                            fontSize: 16,
+                            color: Colors.black,
+                          )),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Text('Avantages :',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      Text(widget.lubrifiant.avantages,
                           style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    Text(widget.lubrifiant.applications,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ))
-                  ])),
-                ),
-              ]),
+                            fontSize: 16,
+                            color: Colors.black,
+                          )),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Text('Applications :',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      Text(widget.lubrifiant.applications,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ))
+                    ])),
+                  ),
+                ]),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

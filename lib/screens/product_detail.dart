@@ -29,48 +29,57 @@ class ProductDetailState extends State<ProductDetail> {
         title: Text(widget.product.title,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.black,
+              color: Colors.blueprimary,
+              fontWeight: FontWeight.bold
             )),
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              height: 300,
-              child: Center(
-                child: Image(
-                  image: AssetImage(widget.product.image),
-                  height: 100,
-                  width: 200,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: 300,
+                child: Center(
+                  child: Image(
+                    image: AssetImage(widget.product.image),
+                    height: 100,
+                    width: 200,
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(children: [
-                Expanded(
-                  flex: 8,
-                  child: SingleChildScrollView(
-                    child: Text(
-                      widget.product.description,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(children: [
+                  Expanded(
+                    flex: 8,
+                    child: SingleChildScrollView(
+                      child: Text(
+                        widget.product.description,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ]),
+                ]),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

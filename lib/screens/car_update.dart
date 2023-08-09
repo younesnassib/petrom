@@ -76,66 +76,51 @@ class CarUpdateState extends State<CarUpdate> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Mes vehicules',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
+          'Modifier le vehicule',
+          style:
+              TextStyle(color: Colors.blueprimary, fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.blueprimary, //change your color here
         ),
       ),
-      body: Column(
-        children: [
-        Expanded(
-        flex: 5,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildRows('Nom'),
-                buildRows('Kilométrage'),
-                buildRows('Type de carburant'),
-                buildRows('Type de voiture'),
-                buildRows('Marque'),
-                buildRows('Carte'),
-                buildRows('Capacité de réservoir'),
-                buildRows('Matricule')
-              ],
-            ),
-          ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+          borderRadius: BorderRadius.circular(3),
         ),
-      ),
-      Expanded(
-        flex: 1,
-        child: Center(
-          child: Card(
-            color: Colors.blue,
-            child: TextButton(
-                onPressed: () => {
-                Navigator.of(context).pop(),
-                updatecar2()
-            },
-            child: Text(
-              'Modifier le vehicule ',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      buildRows('Nom'),
+                      buildRows('Kilométrage'),
+                      buildRows('Type de carburant'),
+                      buildRows('Type de voiture'),
+                      buildRows('Marque'),
+                      buildRows('Carte'),
+                      buildRows('Capacité de réservoir'),
+                      buildRows('Matricule')
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+            UpdateCarButton()
+          ],
         ),
       ),
-    )],
-    )
-    ,
     );
   }
 
-  Widget buildRows(String title) =>
-      Container(
+  Widget buildRows(String title) => Container(
         child: Column(
           children: <Widget>[
             Align(
@@ -145,8 +130,9 @@ class CarUpdateState extends State<CarUpdate> {
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
+                    fontSize: 14,
+                    color: Colors.blueprimary,
+                    fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.right,
                 ),
@@ -162,19 +148,25 @@ class CarUpdateState extends State<CarUpdate> {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: NomController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Kilométrage") {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: KilometrageController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Type de carburant") {
       return DropdownButton<String>(
           isExpanded: true,
           value: typecarburant,
           items: getTypeCarburantsPickerItems()
-              .map((item) =>
-              DropdownMenuItem<String>(value: item, child: Text(item)))
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: TextStyle(fontSize: 14),
+                  )))
               .toList(),
           onChanged: (item) => setState(() => typecarburant = item!));
     } else if (title == "Type de voiture") {
@@ -182,27 +174,33 @@ class CarUpdateState extends State<CarUpdate> {
         isExpanded: true,
         value: typevoiture,
         items: getTypeVoiturePickerItems()
-            .map((item) =>
-            DropdownMenuItem<String>(value: item, child: Text(item)))
+            .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: TextStyle(fontSize: 14),
+                )))
             .toList(),
-        onChanged: (item) =>
-            setState(
-                  () =>
-              {
-                typevoiture = item!,
-                indextypevoiture = getTypeVoiturePickerItems().indexOf(item),
-                marque = Session.informations.response
-                    .marquevehicules[indextypevoiture].marque[0]
-              },
-            ),
+        onChanged: (item) => setState(
+          () => {
+            typevoiture = item!,
+            indextypevoiture = getTypeVoiturePickerItems().indexOf(item),
+            marque = Session.informations.response
+                .marquevehicules[indextypevoiture].marque[0]
+          },
+        ),
       );
     } else if (title == "Marque") {
       return DropdownButton<String>(
           isExpanded: true,
           value: marque,
           items: getMarquePickerItems(indextypevoiture)
-              .map((item) =>
-              DropdownMenuItem<String>(value: item, child: Text(item)))
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: TextStyle(fontSize: 14),
+                  )))
               .toList(),
           onChanged: (item) => setState(() => marque = item!));
     } else if (title == "Carte") {
@@ -210,20 +208,29 @@ class CarUpdateState extends State<CarUpdate> {
           isExpanded: true,
           value: carte,
           items: getCartePickerItems()
-              .map((item) =>
-              DropdownMenuItem<String>(value: item, child: Text(item)))
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: TextStyle(fontSize: 14),
+                  )))
               .toList(),
           onChanged: (item) => setState(() => carte = item!));
     } else if (title == "Capacité de réservoir") {
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
         controller: CapacitereservoirController,
+        style: TextStyle(fontSize: 14),
       );
     } else if (title == "Matricule") {
-      return Text(widget.cardetail.matricule);
+      return Text(
+        widget.cardetail.matricule,
+        style: TextStyle(fontSize: 14),
+      );
     } else
       return TextField(
         decoration: InputDecoration(border: InputBorder.none, hintText: title),
+        style: TextStyle(fontSize: 14),
       );
   }
 
@@ -246,7 +253,7 @@ class CarUpdateState extends State<CarUpdate> {
   List<String> getMarquePickerItems(int type) {
     List<String> itemsCurrency = [];
     for (var currency
-    in Session.informations.response.marquevehicules[type].marque) {
+        in Session.informations.response.marquevehicules[type].marque) {
       itemsCurrency.add(currency);
     }
     return itemsCurrency;
@@ -434,4 +441,30 @@ class CarUpdateState extends State<CarUpdate> {
       });
     } catch (err) {}
   }
+
+  Widget UpdateCarButton() => Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.blueprimary,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(
+            color: Colors.greyprimary, // Border color
+            width: 2, // Border width
+          ),
+        ),
+        child: TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            updatecar2();
+          },
+          child: Text(
+            'Modifier',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.greyprimary,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
 }

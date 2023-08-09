@@ -40,185 +40,138 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: double.infinity,
-                color: Colors.red,
-              ),
-            ),
-            Expanded(flex: 4, child: Container())
-          ]),
-          Column(children: [
-            const Expanded(
-              flex: 1,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, top: 70, right: 40),
-                child: Text(
-                  textAlign: TextAlign.center,
-                  'Bienvenue',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 4,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Card(
-                margin: const EdgeInsets.only(left: 15, right: 15),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                  ),
-                  child: SingleChildScrollView(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child:
+              Center(
+                child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Image(
-                            image: AssetImage('images/petrom_logo.png'),
-                            height: 60,
-                            width: 60,
-                          ),
+                        SizedBox(height: 50),
+                        Image(
+                          image: AssetImage('images/petrom_logo.png'),
+                          height: 60,
+                          width: 60,
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            'Authentification',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: new Card(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: new Row(
-                                children: <Widget>[
-                                  new Expanded(
-                                      flex: 1,
-                                      child: new Image(
-                                        image: AssetImage(
-                                            'images/utilisateurdeprofil.png'),
-                                        height: 40,
-                                        width: 40,
-                                      )),
-                                  new Expanded(
-                                    flex: 8,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: TextField(
-                                        keyboardType: TextInputType.number,
-                                        controller: telController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Numero de telephone',
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: new Card(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: new Row(
-                                children: <Widget>[
-                                  new Expanded(
-                                    flex: 1,
-                                    child: new Image(
-                                      image: AssetImage('images/password.png'),
-                                      height: 40,
-                                      width: 40,
-                                      color: Colors.grey[300],
-                                    ),
-                                  ),
-                                  new Expanded(
-                                    flex: 8,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: TextField(
-                                        obscureText: true,
-                                        keyboardType: TextInputType.number,
-                                        controller: passwordController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Mot de passe',
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        SizedBox(height: 50),
+                        Text(
+                          textAlign: TextAlign.center,
+                          'Authentification',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                           ),
                         ),
                         SizedBox(height: 20),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.of(context)
-                                  .pushNamed(ForgetPassword1.screenRoute)
-                                  .then(
-                                (result) {
-                                  if (result != null) {}
-                                },
-                              )
-                            },
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: new Text(
-                                'Mot de passe oublié ?',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        Row(
+                          children: <Widget>[
+                            new Expanded(
+                                flex: 1,
+                                child: new Image(
+                                  image:
+                                      AssetImage('images/utilisateurdeprofil.png'),
+                                  height: 40,
+                                  width: 40,
+                                )),
+                            new Expanded(
+                              flex: 8,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      controller: telController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Numero de telephone',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    color: Colors.grey,
+                                    height: 0.5,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: <Widget>[
+                            new Expanded(
+                              flex: 1,
+                              child: new Image(
+                                image: AssetImage('images/password.png'),
+                                height: 40,
+                                width: 40,
+                                color: Colors.grey[300],
+                              ),
+                            ),
+                            new Expanded(
+                              flex: 8,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: TextField(
+                                      obscureText: true,
+                                      keyboardType: TextInputType.number,
+                                      controller: passwordController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Mot de passe',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    color: Colors.grey,
+                                    height: 0.5,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        InkWell(
+                          onTap: () => {
+                            Navigator.of(context)
+                                .pushNamed(ForgetPassword1.screenRoute)
+                                .then(
+                              (result) {
+                                if (result != null) {}
+                              },
+                            )
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: new Text(
+                              'Mot de passe oublié ?',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: getConnectionButton()
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: new Column(
+                        SizedBox(height: 30),
+                        getConnectionButton(),
+                        SizedBox(height: 30),
+                        Column(
                             children: <Widget>[
-                              new Text(
-                                  'Vous ne possédez encore pas de compte ? '),
+                              new Text('Vous ne possédez encore pas de compte ?'),
                               InkWell(
                                 onTap: () => {
                                   Navigator.of(context)
-                                      .pushNamed(
-                                          AccountCreationPage.screenRoute)
+                                      .pushNamed(AccountCreationPage.screenRoute)
                                       .then(
                                     (result) {
                                       if (result != null) {}
@@ -234,17 +187,14 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
                               )
                             ],
                           ),
-                        ),
+
                       ],
                     ),
-                  ),
+
                 ),
               ),
-            ),
-          ])
-        ],
-      ),
-    );
+          ),
+        ));
   }
 
   tohome(BuildContext context) {
@@ -333,7 +283,8 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
         tohome(context);
         Session.infosUser = ARE!;
       } else if (response.statusCode == 401) {
-        Session.accountCreation = AccountCreation(Telephone, '', Password, '', '', '', '', '');
+        Session.accountCreation =
+            AccountCreation(Telephone, '', Password, '', '', '', '', '');
         tosms(context);
       } else if (response.statusCode == 404) {
         Fluttertoast.showToast(
@@ -368,7 +319,7 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
     if (passwordvalue == '') {
       return Expanded(
         child: Card(
-          color: Colors.blue,
+          color: Colors.blueprimary,
           child: TextButton(
             onPressed: () async {
               if (telController.text == '' || passwordController.text == '') {
@@ -381,7 +332,7 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
               'Se connecter',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white,
+                color: Colors.greyprimary,
               ),
             ),
           ),
@@ -393,7 +344,7 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
           Expanded(
             flex: 4,
             child: Card(
-              color: Colors.blue,
+              color: Colors.blueprimary,
               child: TextButton(
                 onPressed: () async {
                   if (telController.text == '' ||
@@ -408,7 +359,7 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
                   'Se connecter',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white,
+                    color: Colors.greyprimary,
                   ),
                 ),
               ),
@@ -417,34 +368,34 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
           Expanded(
             flex: 1,
             child: Card(
-              color: Colors.blue,
+              color: Colors.blueprimary,
               child: TextButton(
-                onPressed: () async {
-                  if (passwordvalue != '') {
-                    final authenticate = await LocalAuth.authenticate();
-                    setState(() {
-                      authbiometry = authenticate;
-                    });
-                    if (authbiometry == true) {
-                      print('yeeeeeeeeeeees');
-                      login2(telController.text.trim(), passwordvalue);
-                    }
-                  } else {
-                  }
-                },
-                child: Image(
-                  image: AssetImage('images/biometrie.png'),
-                  height: 30,
-                  width: 30,
-                  color: Colors.white,
-                )
-              ),
+                  onPressed: () async {
+                    if (passwordvalue != '') {
+                      final authenticate = await LocalAuth.authenticate();
+                      setState(() {
+                        authbiometry = authenticate;
+                      });
+                      if (authbiometry == true) {
+                        print('yeeeeeeeeeeees');
+                        await CurrentPosition();
+                        login2(telController.text.trim(), passwordvalue);
+                      }
+                    } else {}
+                  },
+                  child: Image(
+                    image: AssetImage('images/biometrie.png'),
+                    height: 30,
+                    width: 30,
+                    color: Colors.greyprimary,
+                  )),
             ),
           )
         ],
       );
     }
   }
+
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;

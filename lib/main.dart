@@ -37,7 +37,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+
       theme: ThemeData(
+        fontFamily: 'FontMain',
+        appBarTheme: AppBarTheme(
+          elevation: 0, // This removes the shadow from all App Bars.
+        ),
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -62,7 +67,7 @@ class MyApp extends StatelessWidget {
         CarAdd.screenRoute: (ctx) => CarAdd(),
         AlertePage.screenRoute: (ctx) => AlertePage(),
         AlerteAddPage.screenRoute: (ctx) => AlerteAddPage(),
-        CarteScreen.screenRoute: (ctx) => CarteScreen(),
+        // CarteScreen.screenRoute: (ctx) => CarteScreen(),
         TransactionsPage.screenRoute: (ctx) => TransactionsPage(),
         ProductScreen.screenRoute: (ctx) => ProductScreen(),
         StationsListPage.screenRoute: (ctx) => StationsListPage(),

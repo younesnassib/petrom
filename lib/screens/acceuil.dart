@@ -248,177 +248,183 @@ class Acceuil extends StatelessWidget {
       'images/enseignebosch.jpeg',
     ));
 
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Session.infosUser.data.user.codeSap != ''
-                      ? TopButtons(context)
-                      : new Container(),
-                  SizedBox(height: 10),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            textAlign: TextAlign.left,
-                            'Nos Avantages exclusifs ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.white, Colors.greysecondary],
+            begin: Alignment.topCenter),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Session.infosUser.data.user.codeSap != ''
+                        ? TopButtons(context)
+                        : new Container(),
+                    SizedBox(height: 10),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              'Nos Avantages exclusifs ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 4,
                             ),
-                            maxLines: 4,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    child: getAttarikProWidget(context),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            textAlign: TextAlign.left,
-                            'Nos Produits ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
+                    SizedBox(height: 10),
+                    Container(
+                      child: getAttarikProWidget(context),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              'Nos Produits ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blueprimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 4,
                             ),
-                            maxLines: 4,
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(ProductScreen.screenRoute)
-                                .then(
-                              (result) {
-                                if (result != null) {
-                                  // removeItem(result);
-                                }
-                              },
-                            );
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(ProductScreen.screenRoute)
+                                  .then(
+                                (result) {
+                                  if (result != null) {
+                                    // removeItem(result);
+                                  }
+                                },
+                              );
+                            },
+                            child: Image(
+                              image: AssetImage('images/arrowright.png'),
+                              color: Colors.blueprimary,
+                              height: 20,
+                              width: 20,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      child: SizedBox(
+                        height: 180,
+                        child: ListView.builder(
+                          itemCount: Session.products.length,
+                          clipBehavior: Clip.none,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return buildProduct(
+                                context, Session.products[index]);
                           },
-                          child: Image(
-                            image: AssetImage('images/arrowright.png'),
-                            color: Colors.blue,
-                            height: 20,
-                            width: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Container(
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          textAlign: TextAlign.left,
+                          'Nos Enseignes et partenaires',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blueprimary,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Container(
-                    child: SizedBox(
-                      height: 180,
-                      child: ListView.builder(
-                        itemCount: Session.products.length,
-                        clipBehavior: Clip.none,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return buildProduct(context, Session.products[index]);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        textAlign: TextAlign.left,
-                        'Nos Enseignes et partenaires',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
+                          maxLines: 4,
                         ),
-                        maxLines: 4,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 12),
-                  Container(
-                    child: SizedBox(
-                      height: 140,
-                      child: ListView.builder(
-                        itemCount: Session.enseignes.length,
-                        clipBehavior: Clip.none,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(children: [
-                            Center(
-                                child: buildEnseigne(
-                                    context, Session.enseignes[index]))
-                          ]);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        textAlign: TextAlign.left,
-                        'Nos Offres Petrom ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
+                    SizedBox(height: 12),
+                    Container(
+                      child: SizedBox(
+                        height: 140,
+                        child: ListView.builder(
+                          itemCount: Session.enseignes.length,
+                          clipBehavior: Clip.none,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(children: [
+                              Center(
+                                  child: buildEnseigne(
+                                      context, Session.enseignes[index]))
+                            ]);
+                          },
                         ),
-                        maxLines: 4,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 12),
-                  Container(
-                    child: SizedBox(
-                      height: 140,
-                      child: ListView.builder(
-                        itemCount: Session.enseignes.length,
-                        clipBehavior: Clip.none,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(children: [
-                            Center(
-                                child: buildOffre(
-                                    context, Session.enseignes[index]))
-                          ]);
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+                    SizedBox(height: 15),
+                    // Container(
+                    //   child: Align(
+                    //     alignment: Alignment.topLeft,
+                    //     child: Text(
+                    //       textAlign: TextAlign.left,
+                    //       'Nos Offres Petrom ',
+                    //       style: TextStyle(
+                    //         fontSize: 14,
+                    //         color: Colors.blueprimary,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //       maxLines: 4,
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(height: 12),
+                    // Container(
+                    //   child: SizedBox(
+                    //     height: 140,
+                    //     child: ListView.builder(
+                    //       itemCount: Session.enseignes.length,
+                    //       clipBehavior: Clip.none,
+                    //       scrollDirection: Axis.horizontal,
+                    //       itemBuilder: (BuildContext context, int index) {
+                    //         return Column(children: [
+                    //           Center(
+                    //               child: buildOffre(
+                    //                   context, Session.enseignes[index]))
+                    //         ]);
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget buildProduct(BuildContext context, Product product) => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           onTap: () {
@@ -429,19 +435,20 @@ class Acceuil extends StatelessWidget {
           },
           child: Material(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            elevation: 4,
-            shadowColor: Colors.grey[50],
+            borderRadius: BorderRadius.circular(5),
+            elevation: 3,
+            shadowColor: Colors.bluesecondary,
             child: Container(
-              width: 180,
+              width: 200,
               height: 30,
               child: Column(
                 children: [
                   Expanded(
                     child: Image(
                       image: AssetImage(product.image),
-                      height: 50,
-                      width: 50,
+                      height: 60,
+                      width: 60,
+                      color: Colors.bluesecondary,
                     ),
                   ),
                   Expanded(
@@ -449,14 +456,16 @@ class Acceuil extends StatelessWidget {
                       children: [
                         Text(product.title,
                             textAlign: TextAlign.center,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.bluesecondary,fontSize: 14)),
                         Padding(
                           padding: EdgeInsets.all(4),
                           child: Text(
                             textAlign: TextAlign.center,
                             product.description,
                             maxLines: 2,
+                            style: TextStyle(color: Colors.grey,fontSize: 10,),
                           ),
                         ),
                       ],
@@ -523,61 +532,62 @@ class Acceuil extends StatelessWidget {
       );
 
   Widget TopButtons(BuildContext context) => Column(
-    children: [
-      SizedBox(height: 10),
-      Row(children: [
+        children: [
+          SizedBox(height: 10),
+          Row(children: [
             Expanded(
               child: Material(
                 borderRadius: BorderRadius.circular(10),
                 elevation: 4,
                 shadowColor: Colors.grey[50],
                 child: OutlinedButton(
-                    onPressed: () => {
-                          if (Session.infosUser.data.user.codeSap != '')
-                            {
-                              Navigator.of(context)
-                                  .pushNamed(CarPage.screenRoute)
-                                  .then(
-                                (result) {
-                                  if (result != null) {
-                                    // removeItem(result);
-                                  }
-                                },
-                              )
+                  onPressed: () => {
+                    if (Session.infosUser.data.user.codeSap != '')
+                      {
+                        Navigator.of(context)
+                            .pushNamed(CarPage.screenRoute)
+                            .then(
+                          (result) {
+                            if (result != null) {
+                              // removeItem(result);
                             }
-                          else
-                            {
-                              Navigator.of(context)
-                                  .pushNamed(PcardAuthPage.screenRoute)
-                                  .then(
-                                (result) {
-                                  if (result != null) {
-                                    // removeItem(result);
-                                  }
-                                },
-                              )
+                          },
+                        )
+                      }
+                    else
+                      {
+                        Navigator.of(context)
+                            .pushNamed(PcardAuthPage.screenRoute)
+                            .then(
+                          (result) {
+                            if (result != null) {
+                              // removeItem(result);
                             }
-                        },
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: Size(200, 60),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        side: BorderSide(width: 2.0, color: Color(0xFF42A5F5)),
-                        textStyle:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Vehicule'),
-                        SizedBox(width: 12),
-                        Image(
-                            image: AssetImage('images/auto.png'),
-                            height: 30,
-                            width: 30,
-                            color: Color(0xFF42A5F5)),
-                      ],
-                    )),
+                          },
+                        )
+                      }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      fixedSize: Size(200, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      backgroundColor: Colors.blueprimary,
+                      textStyle:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Vehicule', style: TextStyle(color: Colors.white)),
+                      SizedBox(width: 12),
+                      Image(
+                          image: AssetImage('images/auto.png'),
+                          height: 30,
+                          width: 30,
+                          color: Colors.white),
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBox(width: 10),
@@ -585,7 +595,7 @@ class Acceuil extends StatelessWidget {
                 child: Material(
               borderRadius: BorderRadius.circular(10),
               elevation: 4,
-              shadowColor: Colors.grey[50],
+              shadowColor: Colors.greyprimary,
               child: OutlinedButton(
                 onPressed: () => {
                   Navigator.of(context).pushNamed(AlertePage.screenRoute).then(
@@ -597,35 +607,33 @@ class Acceuil extends StatelessWidget {
                   )
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.greysecondary,
                     fixedSize: Size(200, 60),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(3),
                     ),
-                    side: BorderSide(width: 2.0, color: Color(0xFF42A5F5)),
+                    side: BorderSide(width: 2.0, color: Colors.blueprimary),
                     textStyle:
                         TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Alerte'),
+                    Text('Alerte', style: TextStyle(color: Colors.blueprimary)),
                     SizedBox(width: 12),
                     Image(
                         image: AssetImage('images/alerte.png'),
                         height: 30,
                         width: 30,
-                        color: Color(0xFF42A5F5)),
+                        color: Colors.blueprimary),
                   ],
                 ),
               ),
             ))
           ]),
-    ],
-  );
+        ],
+      );
 
   Widget buildEnseigne(BuildContext context, Enseigne enseigne) => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
         margin: EdgeInsets.only(right: 15),
         child: Column(children: [
           InkWell(
@@ -633,12 +641,23 @@ class Acceuil extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => EnseigneDetail(enseigne: enseigne)));
             },
-            child: Material(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              elevation: 4,
-              shadowColor: Colors.grey[50],
-              child: Container(
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft:Radius.circular(30),bottomRight: Radius.circular(30)),
+                  border: Border.all(
+                    color: Colors.bluesecondary, // Border color
+                    width: 1, // Border width
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.greyprimary,
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // changes the shadow direction
+                    ),
+                  ],
+                ),
                 width: 140,
                 height: 100,
                 child: Column(
@@ -653,7 +672,7 @@ class Acceuil extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
+
           ),
           Padding(
               padding: EdgeInsets.all(5),
@@ -664,8 +683,10 @@ class Acceuil extends StatelessWidget {
                     textAlign: TextAlign.center,
                     enseigne.title,
                     maxLines: 3,
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.bluesecondary)),
               )))
         ]),
       );
@@ -673,9 +694,10 @@ class Acceuil extends StatelessWidget {
   Widget getAttarikProWidget(BuildContext context) => Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/carte_blue.jpg'), fit: BoxFit.fill),
-          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+              colors: [Colors.greysecondary, Colors.blueprimary],
+              begin: Alignment.topLeft),
+          borderRadius: BorderRadius.circular(3),
         ),
         width: double.infinity,
         child: InkWell(

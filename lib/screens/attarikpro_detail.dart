@@ -30,10 +30,11 @@ class AttarikProDetailState extends State<AttarikProDetail> {
           title: Text('Attarik PRO',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black,
+                color: Colors.blueprimary,
+                fontWeight: FontWeight.bold
               )),
           iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
+            color: Colors.blueprimary, //change your color here
           ),
         ),
         body: Container(
@@ -114,7 +115,7 @@ class AttarikProDetailState extends State<AttarikProDetail> {
         child: Text(
           text,
           style: TextStyle(
-              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 18, color: Colors.blueprimary, fontWeight: FontWeight.bold),
         ),
       ),
     );

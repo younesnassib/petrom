@@ -156,6 +156,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.white,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 ),
                               ),
@@ -172,6 +173,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.white,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 ),
                               ),

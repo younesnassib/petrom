@@ -93,64 +93,41 @@ class AlerteUpdatePageState extends State<AlerteUpdatePage> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'Mes Alertes',
+          'Modifier l alerte',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black,
+            color: Colors.blueprimary,
+            fontWeight: FontWeight.bold
           ),
         ),
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.blueprimary, //change your color here
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 9,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  buildRows('Type alerte'),
-                  buildRows('Matricule'),
-                  buildCheckRow(),
-                  buildAlerteWidget()
-                ]),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Card(
-                color: Colors.blue,
-                child: TextButton(
-                  onPressed: () => {
-                    if (date.isAfter(DateTime.now()))
-                      {updatealerte()}
-                    else
-                      {
-                        Fluttertoast.showToast(
-                            msg: 'La date que vous avez choisi n est pas valide',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.grey[200],
-                            textColor: Colors.black,
-                            fontSize: 16.0)
-                      }
-                  },
-                  child: const Text(
-                    'Modifier une alerte',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.white, Colors.greysecondary],
+              begin: Alignment.topCenter),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    buildRows('Type alerte'),
+                    buildRows('Matricule'),
+                    buildCheckRow(),
+                    buildAlerteWidget()
+                  ]),
                 ),
               ),
             ),
-          )
-        ],
+            UpdateAlerteButton()
+          ],
+        ),
       ),
     );
   }
@@ -165,9 +142,9 @@ class AlerteUpdatePageState extends State<AlerteUpdatePage> {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                      fontSize: 14,
+                      color: Colors.blueprimary,
+                      fontWeight: FontWeight.bold),
                   textAlign: TextAlign.right,
                 ),
               ),
@@ -363,8 +340,8 @@ class AlerteUpdatePageState extends State<AlerteUpdatePage> {
         child: Row(
           children: <Widget>[
             Checkbox(
-              checkColor: Colors.white,
-              activeColor: Colors.blue,
+              checkColor: Colors.greyprimary,
+              activeColor: Colors.blueprimary,
               value: isChecked,
               onChanged: (bool? value) {
                 setState(() {
@@ -391,8 +368,9 @@ class AlerteUpdatePageState extends State<AlerteUpdatePage> {
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+                  fontSize: 14,
+                  color: Colors.blueprimary,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
@@ -448,4 +426,39 @@ class AlerteUpdatePageState extends State<AlerteUpdatePage> {
         ],
       );
   }
+
+  Widget UpdateAlerteButton() => Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.blueprimary,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(
+            color: Colors.greyprimary, // Border color
+            width: 2, // Border width
+          ),
+        ),
+        child: TextButton(
+          onPressed: () {
+            if (date.isAfter(DateTime.now())) {
+              updatealerte();
+            } else {
+              Fluttertoast.showToast(
+                  msg: 'La date que vous avez choisi n est pas valide',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.grey[200],
+                  textColor: Colors.black,
+                  fontSize: 16.0);
+            }
+          },
+          child: Text(
+            'Modifier',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.greyprimary,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
 }

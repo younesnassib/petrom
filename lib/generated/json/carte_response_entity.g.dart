@@ -55,6 +55,10 @@ CarteResponseEntity $CarteResponseEntityFromJson(Map<String, dynamic> json) {
 	if (idclient != null) {
 		carteResponseEntity.idclient = idclient;
 	}
+	final String? restrictiongeo = jsonConvert.convert<String>(json['Restrictiongeo']);
+	if (restrictiongeo != null) {
+		carteResponseEntity.restrictiongeo = restrictiongeo;
+	}
 	final String? vHS = jsonConvert.convert<String>(json['VHS']);
 	if (vHS != null) {
 		carteResponseEntity.vHS = vHS;
@@ -77,6 +81,7 @@ Map<String, dynamic> $CarteResponseEntityToJson(CarteResponseEntity entity) {
 	data['typecarte'] = entity.typecarte;
 	data['listeproduit'] = entity.listeproduit;
 	data['Idclient'] = entity.idclient;
+	data['Restrictiongeo'] = entity.restrictiongeo;
 	data['VHS'] = entity.vHS;
 	return data;
 }
